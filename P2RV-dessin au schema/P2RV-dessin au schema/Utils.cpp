@@ -23,3 +23,14 @@ int Point::gety(){
 void Point::sety(int Y){
 	y = Y;
 }
+
+//surcharge
+Point operator-(Point const& p1, Point const& p2)
+{
+	// on copie les points pour ne pas les modifier
+	Point copie1 = p1;
+	Point copie2 = p2;
+
+	Point resultat(copie1.getx()-copie2.getx(),copie1.gety()-copie2.gety());
+	return resultat;
+}

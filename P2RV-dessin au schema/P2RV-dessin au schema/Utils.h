@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <math.h>
+#include <cstdlib>
 using namespace std;
 
 #ifdef __APPLE__
@@ -26,8 +27,11 @@ public:
 	void setx(int X);
 	int gety();
 	void sety(int Y);
+
 };
+//surcharge
+Point operator-(Point const& p1, Point const& p2);
 
 #ifndef M_PI
 #define M_PI 3.141592
-#endif 
+#endif
