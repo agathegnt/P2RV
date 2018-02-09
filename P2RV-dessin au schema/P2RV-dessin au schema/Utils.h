@@ -30,6 +30,9 @@ public:
 	float gety();
 	void sety(int Y);
 
+	//fonction pour la norme d'un vecteur
+	double norme();
+
 };
 //surcharge
 Point operator-(Point const& p1, Point const& p2);

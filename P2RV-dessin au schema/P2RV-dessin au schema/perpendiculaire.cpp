@@ -17,3 +17,21 @@ bool IsPerpendicular (Segment f1, Segment f2)
 
   return perpendicular;
 }
+
+//determine si la forme est fermee ou pas
+bool IsClosed (Trait trait)
+{
+  bool closed = false;
+  vector<Point> table = trait.getTable();
+
+  //le trait doit etre d'une taille superieure a 5
+  if (table.size()>5)
+  {
+      Point vector = table[table.size()-1] - table[0];
+      if (vector.norme()<=5)
+      {
+        closed = true;
+      }
+  }
+  return closed;
+}
