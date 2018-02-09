@@ -32,6 +32,10 @@ void Segment::tracer(){
 
 
 //===========TRAIT================================
+vector<Point> Trait::gettable(){
+	return table;
+}
+
 //Constructeur
 Trait::Trait(){
 	table = vector<Point>(0);

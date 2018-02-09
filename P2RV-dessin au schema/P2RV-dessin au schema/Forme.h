@@ -41,6 +41,8 @@ public:
 	//Constructeur
 	Trait();
 
+	vector<Point> gettable();
+
 	//ajoute un poit au vecteur de points
 	virtual void ajout(Point p);
 

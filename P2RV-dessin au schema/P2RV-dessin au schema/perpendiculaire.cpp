@@ -3,7 +3,7 @@
 // dertermine si deux segments sont perpendiculaires
 bool IsPerpendicular (Segment f1, Segment f2)
 {
-  bool perpendicular = false;
+	bool perpendicular = false;
 
     //calcul du produit scalaire
     Point vector1 = f1.getextremite()-f1.getorogine();

@@ -66,10 +66,12 @@
   <ItemGroup>
     <ClCompile Include="Forme.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Forme.h" />
+    <ClInclude Include="Tests.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

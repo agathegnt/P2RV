@@ -1,4 +1,4 @@
-#include "Forme.h"
+#include "Tests.h"
 
 vector<Forme*> liste;//toutes les formes présentes
 int n = 3;//le nombre de formes présentes
@@ -57,13 +57,32 @@ void vMouse(int button, int state, int x, int y)
 	{
 	case GLUT_RIGHT_BUTTON:
 		if (state == GLUT_DOWN) {
-			liste.push_back(new Trait());//=============================================faut un trait mais marche pas
+			liste.push_back(new Trait());
 			n++;
 			tracer = true;
 			cout<<tracer<<endl;
-			//==================================================================liste[n]=new Trait(); //marche pas!!!
 		} else {
 			tracer = false;
+			/*==========================================TESTS SUR liste[n]==========================
+			if(est segment){
+				for (int i = 0; i < liste.size(); i++)
+				{
+					proxi autres pts
+					perp
+					parallèle
+				}
+			}else{
+				if(est fermé){
+					if(cercle){
+						proxi centre/autres pts
+					}
+				}else{
+					if(arc){
+						proxi centre autres pts
+					}
+				}
+			}
+			*/
 		}
 		break;
 	default:
