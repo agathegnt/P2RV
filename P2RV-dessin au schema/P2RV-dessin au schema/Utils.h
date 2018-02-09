@@ -1,6 +1,9 @@
 #pragma once
+#include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <math.h>
+#include <cstdlib>
 using namespace std;
 
 #ifdef __APPLE__
@@ -13,21 +16,24 @@ using namespace std;
 class Point
 {
 private:
-	int x;
-	int y;
+	float x;
+	float y;
 
 public:
 	//Constructeur
 	Point();
-	Point(int X, int Y);
+	Point(int X, int Y, int W, int H);
 
 	//Getters/Setters
-	int getx();
+	float getx();
 	void setx(int X);
-	int gety();
+	float gety();
 	void sety(int Y);
+
 };
+//surcharge
+Point operator-(Point const& p1, Point const& p2);
 
 #ifndef M_PI
 #define M_PI 3.141592
-#endif 
+#endif
