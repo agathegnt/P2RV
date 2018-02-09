@@ -41,6 +41,12 @@ Trait::Trait(){
 	table = vector<Point>(0);
 }
 
+//Getters
+vector<Point> Trait::getTable  ()
+{
+	return table;
+}
+
 //ajoute un point au vecteur de points
 void Trait::ajout(Point p){
 	table.push_back(p);
@@ -56,7 +62,7 @@ void Trait::tracer(){
 			glVertex2f(table[i].getx(), table[i].gety());
 		glEnd();
 	}
-	
+
 }
 
 

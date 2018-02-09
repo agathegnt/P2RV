@@ -36,3 +36,10 @@ Point operator-(Point const& p1, Point const& p2)
 	resultat.sety(copie1.gety()-copie2.gety());
 	return resultat;
 }
+
+//fonction norme vecteur
+double Point::norme()
+{
+	double norme = sqrt(x*x + y*y);
+	return norme;
+}

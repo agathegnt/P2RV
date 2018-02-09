@@ -41,7 +41,12 @@ public:
 	//Constructeur
 	Trait();
 
+<<<<<<< HEAD
 	vector<Point> gettable();
+=======
+	//Getters
+	vector<Point> getTable ();
+>>>>>>> 631ad7f70301accb0a13cd3d87eaf9690f52f389
 
 	//ajoute un poit au vecteur de points
 	virtual void ajout(Point p);
@@ -78,4 +83,4 @@ public:
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
-};
+};};
