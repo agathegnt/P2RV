@@ -48,50 +48,43 @@ void Trait::tracer(){
 	for (int i = 0; i < taille; i++)
 	{
 		glBegin(GL_POINTS);
-			glColor3f(1., 0., 0.);
+			glColor3f(1., 1., 1.);
 			glVertex2f(table[i].getx(), table[i].gety());
+		glEnd();
+	}
+	
+}
+
+
+//===========ARC==================================
+Arc::Arc(Point c, float r, float o, float e){
+	centre = c;
+	rayon = r;
+	if(o<e){
+		angle1 = o;
+		angle2 = e;
+	}else{
+		angle1 = e;
+		angle2 = o;
+	}
+}
+
+void Arc::tracer(){
+	float angle = angle1;
+	for(int i=0; i<100; i++)
+	{
+		glBegin(GL_LINES);
+		glVertex2f(cos(angle)*rayon, sin(angle)*rayon);
+		angle = angle+(angle2-angle1)/100;
+		glVertex2f(cos(angle)*rayon, sin(angle)*rayon);
 		glEnd();
 	}
 }
 
 
-//===========ARC==================================
-Arc::Arc(Point c, int r, Point o, Point e){
-	centre = c;
-	rayon = r;
-	origine = o;
-	extremite = e;
-}
-
-void Arc::tracer(){
-	glBegin(GL_LINES);
-
-	float lim1, lim2;
-	if(origine.getx()>centre.getx()){
-		lim1 = atan(abs(origine.gety()-centre.gety())/origine.getx()-centre.getx());
-	}else{
-		lim1 = M_PI/2 + atan(centre.getx()-origine.getx()/abs(centre.gety()-origine.gety()));
-	}
-	if(extremite.getx()>centre.getx()){
-		lim2 = atan(abs(extremite.gety()-centre.gety())/extremite.getx()-centre.getx());
-	}else{
-		lim2 = M_PI/2 + atan(centre.getx()-extremite.getx()/abs(centre.gety()-extremite.gety()));
-	}
-
-	for(int i=0; i<100; i++)
-	{
-		float angle = 2*M_PI*i/100;
-		if(lim1<angle && angle<lim2){
-			glVertex2f(cos(angle)*rayon, sin(angle)*rayon);
-		}
-	}
-	glEnd();
-}
-
-
 //===========CERCLE===============================
 //Constructeur
-Cercle::Cercle(Point p, int r){
+Cercle::Cercle(Point p, float r){
 	centre = p;
 	rayon = r;
 }
@@ -99,10 +92,11 @@ Cercle::Cercle(Point p, int r){
 //fonction pour tracer la Forme
 void Cercle::tracer(){
 	glBegin(GL_POLYGON);
+	float angle = 0;
 	for(int i=0; i<100; i++)
 	{
-		float angle = 2*M_PI*i/100;
 		glVertex2f(cos(angle)*rayon, sin(angle)*rayon);
+		angle = angle+2*M_PI/100;
 	}
 	glEnd();
 }

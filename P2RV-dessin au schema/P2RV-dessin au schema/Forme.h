@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 
-class Forme
+struct Forme
 {
 private:
 
@@ -12,7 +12,7 @@ public:
 	virtual void ajout(Point p){}
 };
 
-class Segment : Forme
+struct Segment : Forme
 {
 private:
 	Point origine;
@@ -32,7 +32,7 @@ public:
 	virtual void tracer();
 };
 
-class Trait : Forme
+struct Trait : Forme
 {
 private:
 	vector<Point> table;
@@ -48,31 +48,31 @@ public:
 	virtual void tracer();
 };
 
-class Arc : Forme
+struct Arc : Forme
 {
 private:
 	Point centre;
-	int rayon;
-	Point origine;
-	Point extremite;
+	float rayon;
+	float angle1;
+	float angle2;
 
 public:
 	//Constructeur
-	Arc(Point c, int r, Point o, Point e);
+	Arc(Point c, float r, float o, float e);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
 };
 
-class Cercle : Forme
+struct Cercle : Forme
 {
 private:
 	Point centre;
-	int rayon;
+	float rayon;
 
 public:
 	//Constructeur
-	Cercle(Point p, int r);
+	Cercle(Point p, float r);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
