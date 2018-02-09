@@ -1,15 +1,14 @@
 #include "Forme.h"
 
 vector<Forme*> liste;//toutes les formes présentes
-int n = liste.size();//le nombre de formes présentes
+int n = 3;//le nombre de formes présentes
+
 
 //taille fenetre
 int W;
 int H;
 
-bool precedent=false;
-bool actuel = false;
-
+bool tracer = false;
 // Fonction de redimensionnement de la fenetre
 void redimensionner(int w, int h) {
    
@@ -34,8 +33,7 @@ void affichageScene() {
    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   
 	//affichage principal
-	int taille = liste.size();
-	for (int i = 0; i < taille; i++)
+	for (int i = 0; i < n; i++)
 	{
 		liste[i]->tracer();
 	}
@@ -45,43 +43,33 @@ void affichageScene() {
 	
 }
 
-void tracer(int x, int y, bool precedent, bool actuel) {
-	if (actuel && !precedent) {
-		liste.push_back(new Forme());
-		n++;
-		//==================================================================liste[n]=new Trait(); marche pas!!!
-		precedent = actuel;
-	}
-	liste[n]->ajout(Point(x, y));
-}
-
 void deplsouris(int x, int y) {
-	tracer(x, y, precedent, actuel);
-}
-
-void clicdroit(int button, int state, int x, int y)
-{
-	switch (button)
-	{
-	case GLUT_RIGHT_BUTTON:
-		precedent = actuel;
-		if (state == GLUT_DOWN && !actuel) {
-			actuel = true;
-		}
-		if (state == GLUT_UP && !actuel) {
-			actuel = true;
-		}
-		break;
-
-	default:
-		printf("Erreur??\n");
-		break;
+	if(tracer){
+		cout<<"debut remplissage"<<endl;
+		cout<<"n="<<n<<endl;
+		liste[n-1]->ajout(Point(x, y, W, H));
 	}
 }
 
 void vMouse(int button, int state, int x, int y)
 {
-	clicdroit(button,state,x,y);
+	switch (button)
+	{
+	case GLUT_RIGHT_BUTTON:
+		if (state == GLUT_DOWN) {
+			liste.push_back(new Trait());//=============================================faut un trait mais marche pas
+			n++;
+			tracer = true;
+			cout<<tracer<<endl;
+			//==================================================================liste[n]=new Trait(); //marche pas!!!
+		} else {
+			tracer = false;
+		}
+		break;
+	default:
+		printf("Erreur??\n");
+		break;
+	}
 }
 
 int main(int argc, char **argv) {
@@ -104,6 +92,10 @@ int main(int argc, char **argv) {
 	// Declaration des callbacks souris
 	glutMouseFunc(vMouse);
 	glutMotionFunc(deplsouris);
+
+	liste.push_back(new Segment(Point(100, 100, W, H), Point(200, 200, W, H)));
+	liste.push_back(new Cercle(Point(0, 0, W, H), 1.));
+	liste.push_back(new Arc(Point(0, 0, W, H), 0.5, 0., 1.5));
 
 	// enter GLUT event processing cycle
 	glutMainLoop();

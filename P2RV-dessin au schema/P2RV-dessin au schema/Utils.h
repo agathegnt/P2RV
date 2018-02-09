@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <math.h>
 #include <cstdlib>
@@ -14,18 +16,18 @@ using namespace std;
 class Point
 {
 private:
-	int x;
-	int y;
+	float x;
+	float y;
 
 public:
 	//Constructeur
 	Point();
-	Point(int X, int Y);
+	Point(int X, int Y, int W, int H);
 
 	//Getters/Setters
-	int getx();
+	float getx();
 	void setx(int X);
-	int gety();
+	float gety();
 	void sety(int Y);
 
 };
