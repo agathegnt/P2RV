@@ -2,6 +2,11 @@
 
 //===========SEGMENT===============================
 //Constructeur
+Segment::Segment(){
+	origine = Point();
+	extremite = Point();
+}
+
 Segment::Segment(Point o, Point e){
 	origine = o;
 	extremite = e;
@@ -32,10 +37,6 @@ void Segment::tracer(){
 
 
 //===========TRAIT================================
-vector<Point> Trait::gettable(){
-	return table;
-}
-
 //Constructeur
 Trait::Trait(){
 	table = vector<Point>(0);
@@ -94,8 +95,26 @@ void Arc::tracer(){
 
 //===========CERCLE===============================
 //Constructeur
+Cercle::Cercle(){
+	centre = Point();
+	rayon = 0;
+}
+
 Cercle::Cercle(Point p, float r){
 	centre = p;
+	rayon = r;
+}
+
+Point Cercle::getcentre(){
+	return centre;
+}
+void Cercle::setcentre(Point p){
+	centre = p;
+}
+float Cercle::getrayon(){
+	return rayon;
+}
+void Cercle::setrayon(float r){
 	rayon = r;
 }
 

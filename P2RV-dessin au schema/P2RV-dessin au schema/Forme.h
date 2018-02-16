@@ -10,6 +10,8 @@ public:
 	Forme(){}
 	virtual void tracer(){}
 	virtual void ajout(Point p){}
+	virtual void setorogine(Point o){}
+	virtual void setextremite(Point e){}
 };
 
 struct Segment : Forme
@@ -20,13 +22,14 @@ private:
 
 public:
 	//Constructeur
+	Segment();
 	Segment(Point o, Point e);
 
 	//Getters/Setters
 	Point getorogine();
-	void setorogine(Point o);
+	virtual void setorogine(Point o);
 	Point getextremite();
-	void setextremite(Point e);
+	virtual void setextremite(Point e);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
@@ -41,12 +44,8 @@ public:
 	//Constructeur
 	Trait();
 
-<<<<<<< HEAD
-	vector<Point> gettable();
-=======
 	//Getters
 	vector<Point> getTable ();
->>>>>>> 631ad7f70301accb0a13cd3d87eaf9690f52f389
 
 	//ajoute un poit au vecteur de points
 	virtual void ajout(Point p);
@@ -79,8 +78,15 @@ private:
 
 public:
 	//Constructeur
+	Cercle();
 	Cercle(Point p, float r);
+
+	//getters/setters
+	Point getcentre();
+	void setcentre(Point o);
+	float getrayon();
+	void setrayon(float r);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
-};};
+};

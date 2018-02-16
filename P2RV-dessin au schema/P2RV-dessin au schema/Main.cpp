@@ -1,7 +1,7 @@
-#include "Tests.h"
+#include "AnalyserForme.h"
 
 vector<Forme*> liste;//toutes les formes présentes
-int n = 3;//le nombre de formes présentes
+int n = 0;//le nombre de formes présentes
 
 
 //taille fenetre
@@ -9,6 +9,7 @@ int W;
 int H;
 
 bool tracer = false;
+Trait* TraitaTester;
 // Fonction de redimensionnement de la fenetre
 void redimensionner(int w, int h) {
    
@@ -45,8 +46,6 @@ void affichageScene() {
 
 void deplsouris(int x, int y) {
 	if(tracer){
-		cout<<"debut remplissage"<<endl;
-		cout<<"n="<<n<<endl;
 		liste[n-1]->ajout(Point(x, y, W, H));
 	}
 }
@@ -57,10 +56,11 @@ void vMouse(int button, int state, int x, int y)
 	{
 	case GLUT_RIGHT_BUTTON:
 		if (state == GLUT_DOWN) {
-			liste.push_back(new Trait());
+			Trait* TraitenCours = new Trait();
+			TraitaTester = TraitenCours;
+			liste.push_back(TraitenCours);
 			n++;
 			tracer = true;
-			cout<<tracer<<endl;
 		} else {
 			tracer = false;
 			/*==========================================TESTS SUR liste[n]==========================
@@ -83,6 +83,27 @@ void vMouse(int button, int state, int x, int y)
 				}
 			}
 			*/
+			if(trouversegment(*TraitaTester, 1, W, H)){
+				Point p1 = ((*TraitaTester).getTable())[0];
+				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
+				Segment* seg = new Segment();
+				liste.pop_back();
+				liste.push_back(seg);
+				liste[n-1]->setextremite(p1);
+				liste[n-1]->setorogine(p2);
+			}else{
+				if(IsClosed (*TraitaTester, W)){
+					cout<<"closed"<<endl;
+					Cercle* cercle = new Cercle();
+					if(trouvercercle(*TraitaTester, *cercle, 800, W, H)){
+						cout<<(*cercle).getrayon()<<endl;
+						cout<<(*cercle).getcentre().getx()<<"     "<<(*cercle).getcentre().gety()<<endl;
+						cout<<"cercle"<<endl;
+						liste.pop_back();
+						liste.push_back(cercle);
+					}
+				}
+			}
 		}
 		break;
 	default:
@@ -112,9 +133,9 @@ int main(int argc, char **argv) {
 	glutMouseFunc(vMouse);
 	glutMotionFunc(deplsouris);
 
-	liste.push_back(new Segment(Point(100, 100, W, H), Point(200, 200, W, H)));
+	/*liste.push_back(new Segment(Point(100, 100, W, H), Point(200, 200, W, H)));
 	liste.push_back(new Cercle(Point(0, 0, W, H), 1.));
-	liste.push_back(new Arc(Point(0, 0, W, H), 0.5, 0., 1.5));
+	liste.push_back(new Arc(Point(0, 0, W, H), 0.5, 0., 1.5));*/
 
 	// enter GLUT event processing cycle
 	glutMainLoop();

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>
@@ -26,16 +27,19 @@ public:
 
 	//Getters/Setters
 	float getx();
-	void setx(int X);
+	void setx(float X);
 	float gety();
-	void sety(int Y);
+	void sety(float Y);
 
 	//fonction pour la norme d'un vecteur
-	double norme();
+	float norme();
 
 };
 //surcharge
 Point operator-(Point const& p1, Point const& p2);
+Point operator+(Point const& p1, Point const& p2);
+Point operator/(Point const& p1, float f);
+Point operator*(float f, Point const& p1);
 
 #ifndef M_PI
 #define M_PI 3.141592
