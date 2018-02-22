@@ -1,22 +1,15 @@
 #include "AnalyserForme.h"
 
-<<<<<<< HEAD
 
-//Fonction de distance entre deux points
-=======
 //=========== FONCTIONS UTILES ================================
 
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
+//Fonction de distance entre deux points
 float distanceP(Point P1, Point P2, int W, int H) {
 	return sqrt((P1.getx()*W/2 - P2.getx()*W/2)*(P1.getx()*W/2 - P2.getx()*W/2) + (P1.gety()*H/2 - P2.gety()*H/2)*(P1.gety()*H/2 - P2.gety()*H/2));
 }
 
-<<<<<<< HEAD
 
 //retourne vrai si les deux segments passés en arguments sont presques perpendiculaires
-=======
-// retourne vrai si les segments sont perpendiculaires
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
 bool IsPerpendicular (Segment f1, Segment f2)
 {
 	bool perpendicular = false;
@@ -33,11 +26,8 @@ bool IsPerpendicular (Segment f1, Segment f2)
 	return perpendicular;
 }
 
-<<<<<<< HEAD
+
 //retourne vrai si les deux segments passés en arguments sont presques parallèles
-=======
-// retourne vrai si les segments sont paralleles
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
 bool IsParallel (Segment f1, Segment f2)
 {
 	//calcul du produit scalaire
@@ -72,15 +62,11 @@ bool IsClosed (Trait trait, int W, int distancemaxclosed)
 	return closed;
 }
 
-<<<<<<< HEAD
+
+//=========== ANALYSE SEGMENT ================================
 
 //détermine si un trait est presque un segment ou non
 bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
-=======
-//=========== ANALYSE SEGMENT ================================
-
-bool trouversegment(Trait trait, float distancemax, int W, int H) {
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
 	float distot = 0.;
@@ -101,14 +87,10 @@ bool trouversegment(Trait trait, float distancemax, int W, int H) {
 	else { return false; }
 }
 
-<<<<<<< HEAD
-//détermine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le paramètre cercle
-bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, int H) {
-=======
 //=========== ANALYSE CERCLE ================================
 
-bool trouvercercle(Trait trait, Cercle& cercle, float distancemax, int W, int H) {
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
+//détermine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le paramètre cercle
+bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
 	float distot = 0.;
@@ -133,7 +115,7 @@ bool trouvercercle(Trait trait, Cercle& cercle, float distancemax, int W, int H)
 	else { return false; }
 }
 
-<<<<<<< HEAD
+
 //retourne l'indice coorespondant si le point existe dans le vector, -1 si non
 int cherchevec(Point p, vector<Point> points){
 	for (int i = 0; i < (signed)points.size(); i++)
@@ -241,10 +223,11 @@ void AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpo
 
 	//si pas trouvés, recherche de perpendiculaire
 }
-=======
+
+
 //=========== ANALYSE LIGNE BRISEE ================================
 
-bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int W, int H) {
+/*bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int W, int H) {
 	//booleen retourne
 	bool estLigne = false;
 
@@ -287,4 +270,4 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int 
 	}
 	return estLigne;
 }
->>>>>>> bef21e61cbd4c95e74a4fb12c3d8cd4dda386c2c
+*/
