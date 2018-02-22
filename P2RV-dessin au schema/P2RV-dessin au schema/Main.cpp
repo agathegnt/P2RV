@@ -8,6 +8,11 @@ int n = 0;//le nombre de formes présentes
 int W;
 int H;
 
+int distancemaxclosed = 20;
+int distancemaxcercle = 1000;
+int distancemaxsegment = 1;
+int distancepoint = 20;
+
 bool tracer = false;
 Trait* TraitaTester;
 // Fonction de redimensionnement de la fenetre
@@ -83,22 +88,19 @@ void vMouse(int button, int state, int x, int y)
 				}
 			}
 			*/
-			if(trouversegment(*TraitaTester, 1, W, H)){
+			if(trouversegment(*TraitaTester, distancemaxsegment, W, H)){
 				Point p1 = ((*TraitaTester).getTable())[0];
 				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
 				Segment* seg = new Segment();
+				seg->setorogine(p1);
+				seg->setextremite(p2);
 				liste.pop_back();
 				liste.push_back(seg);
-				liste[n-1]->setextremite(p1);
-				liste[n-1]->setorogine(p2);
+				AnalyseSegment(seg, liste, n, distancepoint, W, H);
 			}else{
-				if(IsClosed (*TraitaTester, W)){
-					cout<<"closed"<<endl;
+				if(IsClosed (*TraitaTester, W, distancemaxclosed)){
 					Cercle* cercle = new Cercle();
-					if(trouvercercle(*TraitaTester, *cercle, 800, W, H)){
-						cout<<(*cercle).getrayon()<<endl;
-						cout<<(*cercle).getcentre().getx()<<"     "<<(*cercle).getcentre().gety()<<endl;
-						cout<<"cercle"<<endl;
+					if(trouvercercle(*TraitaTester, *cercle, distancemaxcercle, W, H)){
 						liste.pop_back();
 						liste.push_back(cercle);
 					}
@@ -110,6 +112,23 @@ void vMouse(int button, int state, int x, int y)
 		printf("Erreur??\n");
 		break;
 	}
+}
+
+void clavier(unsigned char key, int xx, int yy) {
+	// Quelle touche a ete appuyee ?
+	switch(key) {
+	case 's' :
+	case 'S' :
+		if(n>0){
+			liste.pop_back();
+			n--;
+		}
+	break;
+	// ESCAPE on termine l'application
+	case 27 :
+		exit(0);
+    break;
+   }
 }
 
 int main(int argc, char **argv) {
@@ -132,6 +151,9 @@ int main(int argc, char **argv) {
 	// Declaration des callbacks souris
 	glutMouseFunc(vMouse);
 	glutMotionFunc(deplsouris);
+
+	// Declaration des callbacks clavier
+   glutKeyboardUpFunc(&clavier);
 
 	/*liste.push_back(new Segment(Point(100, 100, W, H), Point(200, 200, W, H)));
 	liste.push_back(new Cercle(Point(0, 0, W, H), 1.));

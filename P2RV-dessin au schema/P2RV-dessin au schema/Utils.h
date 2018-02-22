@@ -26,9 +26,9 @@ public:
 	Point(int X, int Y, int W, int H);
 
 	//Getters/Setters
-	float getx();
+	float const getx();
 	void setx(float X);
-	float gety();
+	float const gety();
 	void sety(float Y);
 
 	//fonction pour la norme d'un vecteur
@@ -36,6 +36,7 @@ public:
 
 };
 //surcharge
+bool operator==(Point const& p1, Point const& p2);
 Point operator-(Point const& p1, Point const& p2);
 Point operator+(Point const& p1, Point const& p2);
 Point operator/(Point const& p1, float f);
