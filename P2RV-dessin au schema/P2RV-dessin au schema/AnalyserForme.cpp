@@ -1,7 +1,7 @@
 #include "AnalyserForme.h"
 
 float distanceP(Point P1, Point P2, int W, int H) {
-	return sqrt((P1.getx()*W/2 - P2.getx()*W/2)*(P1.getx()*W/2 - P2.getx()*W/2) + (P1.gety()*H/2 - P2.gety()*H/2)*(P1.gety()*H/2 - P2.gety()*H/2));
+	return sqrt((P1.getx()*W/2 - P2.getx()*W/2)*(P1.getx()*W/2 - P2.getx()*W/2) + (P1.gety()*H/2 - P2.gety()*H/2)*(P1.gety()*H/2 - P2.gety()*H/2)+ (P1.getz()*D / 2 - P2.getz()*D / 2)*(P1.getz()*D / 2 - P2.getz()*D / 2));
 }
 
 bool IsPerpendicular (Segment f1, Segment f2)
@@ -11,7 +11,7 @@ bool IsPerpendicular (Segment f1, Segment f2)
     //calcul du produit scalaire
     Point vector1 = f1.getextremite()-f1.getorogine();
     Point vector2 = f2.getextremite()-f2.getorogine();
-    int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety();
+    int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety()+ vector1.getz()*vector2.getz();
 
     if (prod_scal < 0,01)
     {
@@ -28,7 +28,7 @@ bool IsParallel (Segment f1, Segment f2)
   //calcul du produit scalaire
   Point vector1 = f1.getextremite()-f1.getorogine();
   Point vector2 = f2.getextremite()-f2.getorogine();
-  int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety();
+  int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety()+ vector1.getz()*vector2.getz();
 
   //compare le produit scalaire au produit des normes des vecteurs
   if (prod_scal - vector1.norme()*vector2.norme()< 0,01)
@@ -54,6 +54,17 @@ bool IsClosed (Trait trait, int W)
       {
         closed = true;
       }
+	  else {
+		  int i = 2;
+		  while (vector > table[table.size() - i] - table[0]) {
+			  vector > table[table.size() - i] - table[0];
+			  if (vector.norme() <= 5)
+			  {
+				  closed = true;
+			  }
+			  i++;
+		  }
+	  }
   }
   return closed;
 }
@@ -90,6 +101,7 @@ bool trouvercercle(Trait trait, Cercle& cercle, float distancemax, int W, int H)
 	for (int k = 0; k < j; k++){
 		centre.setx((nuage[k].getx() + k * centre.getx()) / (k + 1));
 		centre.sety((nuage[k].gety() + k * centre.gety()) / (k + 1));
+		centre.setz((nuage[k].gety() + k * centre.gety()) / (k + 1));
 	}
 	for (int k = 0; k < j; k++){
 		distmoy += distanceP(centre, nuage[k], W, H);
