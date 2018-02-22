@@ -1,9 +1,12 @@
 #include "AnalyserForme.h"
 
+//=========== FONCTIONS UTILES ================================
+
 float distanceP(Point P1, Point P2, int W, int H) {
 	return sqrt((P1.getx()*W/2 - P2.getx()*W/2)*(P1.getx()*W/2 - P2.getx()*W/2) + (P1.gety()*H/2 - P2.gety()*H/2)*(P1.gety()*H/2 - P2.gety()*H/2));
 }
 
+// retourne vrai si les segments sont perpendiculaires
 bool IsPerpendicular (Segment f1, Segment f2)
 {
 	bool perpendicular = false;
@@ -21,6 +24,7 @@ bool IsPerpendicular (Segment f1, Segment f2)
 	return perpendicular;
 }
 
+// retourne vrai si les segments sont paralleles
 bool IsParallel (Segment f1, Segment f2)
 {
   bool parallel = false;
@@ -58,6 +62,8 @@ bool IsClosed (Trait trait, int W)
   return closed;
 }
 
+//=========== ANALYSE SEGMENT ================================
+
 bool trouversegment(Trait trait, float distancemax, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
@@ -80,6 +86,8 @@ bool trouversegment(Trait trait, float distancemax, int W, int H) {
 	}
 	else { return false; }
 }
+
+//=========== ANALYSE CERCLE ================================
 
 bool trouvercercle(Trait trait, Cercle& cercle, float distancemax, int W, int H) {
 	vector<Point> nuage = trait.getTable();
@@ -104,4 +112,50 @@ bool trouvercercle(Trait trait, Cercle& cercle, float distancemax, int W, int H)
 		return true;
 	}
 	else { return false; }
+}
+
+//=========== ANALYSE LIGNE BRISEE ================================
+
+bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int W, int H) {
+	//booleen retourne
+	bool estLigne = false;
+
+	//recuperation du nuage de points
+	vector<Point> nuage = trait.getTable();
+	int taille = nuage.size();
+
+	int cpt = 1;
+	int debut = 0;
+	//initialisation du trait temporaire
+	Trait trait_tmp = Trait();
+	trait_tmp.ajout(nuage[debut]);
+
+	//parcours de tous les points du trait
+	while (cpt<taille)
+	{
+		//ajout du point suivant au trait temporaire
+		trait_tmp.ajout(nuage[cpt]);
+
+		//si avec ce point supplementaire on perd le segment
+		if (!trouversegment(trait_tmp, distancemax, W, H))
+		{
+				//on cree un segment avec les points precedents
+				Segment segment_tmp = Segment(nuage[debut], nuage[cpt-1]);
+				//ajout de ce segment a la ligne BRISEE
+				ligne.ajoutSegment(segment_tmp);
+				//reinitialisation des donnees temporaires
+				debut = cpt;
+				trait_tmp = Trait();
+				trait_tmp.ajout(nuage[debut]);
+		}
+
+		//incrementation du compteur
+		cpt += 1;
+	}
+
+	if ((ligne.getTable()).size()>1)
+	{
+		estLigne = true;
+	}
+	return estLigne;
 }
