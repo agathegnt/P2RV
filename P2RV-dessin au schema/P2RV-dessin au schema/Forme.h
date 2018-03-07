@@ -2,6 +2,7 @@
 
 #include "Utils.h"
 
+class Forme
 {
 protected:
 	int type;
