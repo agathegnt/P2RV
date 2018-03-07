@@ -1,5 +1,7 @@
 #include "Utils.h"
 
+/* Point */
+
 //Constructeurs
 Point::Point(){
 	x = 0;
@@ -56,7 +58,7 @@ Point operator+(Point const& p1, Point const& p2)
 	Point resultat = Point();
 	resultat.setx(copie1.getx()+copie2.getx());
 	resultat.sety(copie1.gety()+copie2.gety());
-	resultat.setz(copie1.getz() + copie2.getz());
+	resultat.setz(copie1.getz()+copie2.getz());
 	return resultat;
 }
 
@@ -68,7 +70,7 @@ Point operator/(Point const& p1, float f)
 	Point resultat = Point();
 	resultat.setx(copie1.getx()/f);
 	resultat.sety(copie1.gety()/f);
-	resultat.setz(copie1.getz() / f);
+	resultat.setz(copie1.getz()/f);
 	return resultat;
 }
 
@@ -87,6 +89,36 @@ Point operator*(float f, Point const& p1)
 //fonction norme vecteur
 float Point::norme()
 {
-	float norme = sqrt(x*x + y*y+z*z);
+	float norme = sqrt(x*x+y*y+z*z);
 	return norme;
+}
+
+//fonction produit vectoriel pour les points :
+Point Point::ProdVect(Point P1){
+	return Point(this.gety()*P1.getz()-this.getz()*P1.gety(),this.getz()*P1.getx()-this.getx()*P1.getz(),this.getx()*P1.gety()-this.gety()*P1.getx());
+}
+
+/* Plan */
+Plan::Plan(){
+	Attache=Point();
+	Normale=Point();
+}
+
+Plan::Plan(Point Patt,Point Pnor){
+	Attache=Patt;
+	Normale=Pnor;
+}
+
+//Getters/Setters
+Point Plan::getAttache(){
+	return Attache;
+}
+void Plan::setAttache(Point Patt){
+	Attache = X;
+}
+Point Plan::getNormale(){
+	return Normale;
+}
+void Plan::setNormale(Point Pnor){
+	Normale = Pnor;
 }

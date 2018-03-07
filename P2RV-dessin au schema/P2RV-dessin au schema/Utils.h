@@ -36,6 +36,7 @@ public:
 
 	//fonction pour la norme d'un vecteur
 	float norme();
+	Point ProdVect(Point P1);
 
 };
 //surcharge
@@ -44,6 +45,27 @@ Point operator+(Point const& p1, Point const& p2);
 Point operator/(Point const& p1, float f);
 Point operator*(float f, Point const& p1);
 
+class Plan
+{
+private: 
+	Point Attache;
+	Point Normale;
+
+public:
+	//Constructeur
+	Plan();
+	Plan(Point Patt,Point Pnor);
+
+	//Getters/Setters
+	Point GetAttache();
+	void SetAttache(Point Patt);
+	Point GetNormale();
+	void SetNormale();
+}
+
 #ifndef M_PI
 #define M_PI 3.141592
 #endif
+
+
+

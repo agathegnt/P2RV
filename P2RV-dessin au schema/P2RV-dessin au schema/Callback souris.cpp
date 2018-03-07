@@ -35,7 +35,7 @@ void tracer(int x, int y, bool precedent, bool actuel) {
 
 void vMouse(int button, int state, int x, int y)
 {
-	clicdroit(button,state,x,y)
+	clicdroit(button,state,x,y);
 }
 
 void clicdroit(int button, int state, int x, int y)

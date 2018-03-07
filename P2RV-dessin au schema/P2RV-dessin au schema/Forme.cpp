@@ -129,3 +129,39 @@ void Cercle::tracer(){
 	}
 	glEnd();
 }
+
+//Définition de plan pour tracé:
+
+Plan defplan(){
+	Point P1;
+	Point P2;
+	Point P3;
+	bool validation =false;
+	int x1,y1,z1;
+	int x2,y2,z2;
+	int x3,y3,z3;
+
+	while(!validation){
+		cout<<"P1= ("<<x1<<","<<y1<<","<<z1<<")"<<endl;
+		cin>>"(">>x1>>",">>y1>>",">>z1>>")">>endl;
+		P1 = Point(x1,y1,z1);
+		cout<<"P2= ("<<x2<<","<<y2<<","<<z2<<")"<<endl;
+		cin>>"(">>x2>>",">>y2>>",">>z2>>")">>endl;
+		P2 = Point(x2,y2,z2);
+		cout<<"P3= ("<<x3<<","<<y3<<","<<z3<<")"<<endl;
+		cin>>"(">>x3>>",">>y3>>",">>z3>>")">>endl;
+		P3 = Point(x3,y3,z3);
+
+		cin>>validation>>endl;
+		if(P1==P2 or P2==P3 or P3==P1){
+			validation=false;
+			cout<<"Vos points ne définissent pas un plan, veuillez les changer"<<endl;}
+	}
+
+	Point P1P2 = P2-P1;
+	Point P3P1 = P3-P1;
+
+	Point normale = P1P2.ProdVect(P3P1);
+	
+	return Plan(P1,normale);
+}
