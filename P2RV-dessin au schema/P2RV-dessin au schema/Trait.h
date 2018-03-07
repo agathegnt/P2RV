@@ -2,7 +2,6 @@
 
 #include "Forme.h"
 
-struct Trait : Forme
 {
 private:
 	vector<Point> table;

@@ -2,7 +2,6 @@
 
 #include "Utils.h"
 
-struct Forme
 {
 protected:
 	int type;
