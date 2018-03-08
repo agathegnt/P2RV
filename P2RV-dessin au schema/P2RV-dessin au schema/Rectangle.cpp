@@ -2,8 +2,8 @@
 
 //Constructeur rectangle nul
 Rectangle::Rectangle(){
-	ref = 0;
-	oppose = 0;
+	ref = Point();
+	oppose = Point();
 	type = RECTANGLE;
 }
 

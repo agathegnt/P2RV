@@ -21,3 +21,8 @@ public:
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
+};
+
+#ifndef LIGNEBRISEE
+#define LIGNEBRISEE 4
+#endif

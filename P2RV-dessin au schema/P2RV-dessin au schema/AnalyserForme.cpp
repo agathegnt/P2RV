@@ -66,7 +66,7 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 {
 	bool closed = false;
 	vector<Segment> table = ligne.getTable();
-	Point debut = table[0].getorogine();
+	Point debut = table[0].getorigine();
 	Point fin = table[table.size()-1].getextremite();
 	Point vector = fin - debut;
 	//si les deux extremites du trait sont proches, alors la forme est presque fermee
@@ -79,7 +79,7 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 
 //=========== ANALYSE SEGMENT ================================
 
-//dï¿½termine si un trait est presque un segment ou non
+//determine si un trait est presque un segment ou non
 bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
@@ -141,7 +141,6 @@ int cherche_point_vec(Point p, vector<Point> points){
 	return -1;
 }
 
-<<<<<<< HEAD
 //retourne l'indice correspondant si le Segment existe dans le vector, -1 si non
 int cherche_segment_vec(Segment seg, vector<Forme*> segs){
 	for (int i = 0; i < (signed)segs.size(); i++)
@@ -153,10 +152,9 @@ int cherche_segment_vec(Segment seg, vector<Forme*> segs){
 	return -1;
 }
 
-//cherche près de quels points importants de la liste de formes se trouve p, et retourne le point le plus intéressant (si il existe)
-=======
-//cherche prï¿½s de quels points importants de la liste de formes se trouve p, et retourne le point le plus intï¿½ressant (si il existe)
->>>>>>> b534fb6b3a4aa51e6ac9e3e187403e2f67977150
+//cherche pres de quels points importants de la liste de formes se trouve p, et retourne le point le plus interessant (si il existe)
+
+
 Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
 	vector<Point> points;//les points dont est proche p
 	vector<int> indpoints;//l'importance de ces points : plus important si il est l'extrémité de 3 segments et le centre de 2 cercles
@@ -302,13 +300,8 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 	newseg.setorigine(origine);
 	newseg.setextremite(extremite);
 	//recherche de points
-<<<<<<< HEAD
-	
 	origine = ajoutpointconfondu(&(seg->getorigine()), liste, n, distancemaxpoints, W, H);
-=======
-
-	origine = ajoutpointconfondu(&(seg->getorogine()), liste, n, distancemaxpoints, W, H);
->>>>>>> b534fb6b3a4aa51e6ac9e3e187403e2f67977150
+	origine = ajoutpointconfondu(&(seg->getorigine()), liste, n, distancemaxpoints, W, H);
 	if(origine.getx()<1){
 		or = true;
 		newseg.setorigine(origine);
@@ -320,15 +313,12 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 		newseg.setextremite(extremite);
 	}
 
-<<<<<<< HEAD
-	//si pas trouvés, recherche de perpendiculaire
+
+	//si pas trouves, recherche de perpendiculaire
 	/*if(!or){
 		origine = ajoutperpendicularite(*seg, true,  liste, n, distancemaxpoints, W, H);
-=======
-	//si pas trouvï¿½s, recherche de perpendiculaire
 	if(!or){
 		origine = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
->>>>>>> b534fb6b3a4aa51e6ac9e3e187403e2f67977150
 		if(origine.getx()<1){
 			or = true;
 			newseg.setorigine(origine);
@@ -340,15 +330,10 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 			ex = true;
 			newseg.setextremite(extremite);
 		}
-<<<<<<< HEAD
+
 	}*/
-	//si pas de points trouvés, recherche de parallèles
-=======
-	}
-	//si pas de points trouvï¿½s, recherche de parallï¿½les
+	//si pas de points trouves, recherche de paralleles
 
-
->>>>>>> b534fb6b3a4aa51e6ac9e3e187403e2f67977150
 
 	return newseg;
 }
@@ -392,7 +377,6 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int 
 		//incrementation du compteur
 		cpt += 1;
 	}
-
 	if ((ligne.getTable()).size()>1)
 	{
 		estLigne = true;
@@ -419,11 +403,12 @@ bool estRectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, int di
 				&& IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;
-					rectangle.setRef(segmentTable[0].getorogine());
-					rectangle.setOppose(segmentTable[2].getorogine());
+					rectangle.setRef(segmentTable[0].getorigine());
+					rectangle.setOppose(segmentTable[2].getorigine());
 				}
 		}
 	}
+	return est_rectangle;
 }
 
 //=========== ANALYSE POLYGONE ================================
@@ -439,27 +424,26 @@ bool estPolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int ecart
 	if (IsClosedLigne (ligne, W, ecartmax))
 	{
 		//definition de la taille reference
-		for (int i=0; i<table.size(); i++)
+		for (int i=0; i<(signed)table.size(); i++)
 		{
-			reference += distanceP(table[i].getorogine(), table[i].getextremite(), W, H);
+			reference += distanceP(table[i].getorigine(), table[i].getextremite(), W, H);
 		}
 		reference = reference / table.size();
 		//comparaison de la reference avec les autres segments
-		for (int i=0; i<table.size(); i++)
+		for (int i=0; i<(signed)table.size(); i++)
 		{
-			if (reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax)
+			if (reference - distanceP(table[i].getorigine(), table[i].getextremite(), W, H) > ecartmax)
 			{
-				est_polygone *= true;
+				est_polygone = false;
 			}
-			else {est_polygone *= false;}
 		}
 	}
-	else {est_polygone *= false;}
+	else {est_polygone = false;}
 	//definition du polygone si c'en est un
 	if (est_polygone)
 	{
-		polygone.setPremier(table[0].getorogine());
-		polygone.setDirection(table[0].getextremite() - table[0].getorogine());
+		polygone.setPremier(table[0].getorigine());
+		polygone.setDirection(table[0].getextremite() - table[0].getorigine());
 		polygone.setSommets(table.size());
 	}
 	return est_polygone;
