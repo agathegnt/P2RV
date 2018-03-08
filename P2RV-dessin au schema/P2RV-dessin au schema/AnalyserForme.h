@@ -9,12 +9,12 @@
 #include "Polygone.h"
 
 float distanceP(Point, Point);
-bool IsPerpendicular (Segment, Segment);
-bool IsParallel (Segment, Segment);
+bool IsPerpendicular (Forme, Segment);
+bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);
 bool trouversegment(Trait, int, int, int);
 bool trouvercercle(Trait, Cercle&, int, int, int);
 
 int cherchevec(Point, vector<Point>);
-bool ajoutpoint(Point*, Point*, vector<Forme*>, int, int, int, int);
-void AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);
+Point ajoutpointconfondu(Point*, vector<Forme*>, int, int, int, int);
+Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);
