@@ -10,7 +10,7 @@ float distanceP(Point P1, Point P2, int W, int H) {
 
 
 //retourne vrai si les deux segments passés en arguments sont presques perpendiculaires
-bool IsPerpendicular (Segment f1, Segment f2)
+bool IsPerpendicular (Forme f1, Segment f2)
 {
 	bool perpendicular = false;
 
@@ -28,7 +28,7 @@ bool IsPerpendicular (Segment f1, Segment f2)
 
 
 //retourne vrai si les deux segments passés en arguments sont presques parallèles
-bool IsParallel (Segment f1, Segment f2)
+bool IsParallel (Forme f1, Segment f2)
 {
 	//calcul du produit scalaire
 	Point vector1 = f1.getextremite()-f1.getorogine();
@@ -127,9 +127,8 @@ int cherchevec(Point p, vector<Point> points){
 	return -1;
 }
 
-//cherche près de quels points importants de la liste de formes se trouve p, et le déplace au point le plus intéressant (si il existe); retourne true si déplace le point
-bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	cout<<"analyse 1 extremite"<<endl;
+//cherche près de quels points importants de la liste de formes se trouve p, et retourne le point le plus intéressant (si il existe)
+Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
 	vector<Point> points;
 	vector<int> indpoints;
 	int j = 0;
@@ -141,7 +140,6 @@ bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int dist
 		case SEGMENT:
 			pointinterm = liste[i]->getextremite();
 			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				cout<<"proche"<<endl;
 				j = cherchevec(pointinterm, points);
 				if(j>=0){
 					indpoints[j]++;
@@ -152,7 +150,6 @@ bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int dist
 			}
 			pointinterm = liste[i]->getorogine();
 			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				cout<<"proche"<<endl;
 				j = cherchevec(pointinterm, points);
 				if(j>=0){
 					indpoints[j]++;
@@ -166,7 +163,6 @@ bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int dist
 		case ARC:
 			pointinterm = liste[i]->getcentre();
 			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				cout<<"proche"<<endl;
 				j = cherchevec(pointinterm, points);
 				if(j>=0){
 					indpoints[j]++;
@@ -184,8 +180,7 @@ bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int dist
 		}
 	}
 	if(points.size()==0){
-		cout<<"RATEEEEEEEEEEEEEEEE"<<endl;
-		return false;
+		return Point(1000, 1000, W, H);
 	}else{
 		int indice = 0;
 		int val = 0;
@@ -196,32 +191,91 @@ bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int dist
 				indice = i;
 			}
 		}
-		cout<<"deplaceici"<<endl;
 		pointinterm.setx(points[indice].getx());
 		pointinterm.sety(points[indice].gety());
 		cout<<liste[n-1]->getextremite().getx()<<endl;
-		liste.pop_back();
-		Segment* seg = new Segment();
-		seg->setorogine(pointinterm);
-		seg->setextremite(*bougepas);
-		liste.push_back(seg);
-		cout<<liste[n-1]->getextremite().getx()<<endl;
-		return true;
+		return pointinterm;
 	}
 }
 
-void AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	bool originechangee = false;
-	bool extremitechangee = false;
+Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
+	Point pointinterm;
+	vector<Point> points;
+	vector<int> indpoints;
+	int j = 0;
+	for (int i = 0; i < n-1; i++)
+	{
+		if(liste[i]->gettype()==SEGMENT){
+			if(IsPerpendicular (*liste[i], seg)){
+				j = cherchevec(pointinterm, points);
+				if(j>=0){
+					indpoints[j]++;
+				}else{
+					points.push_back(pointinterm);
+					indpoints.push_back(1);
+				}
+			}
+		}
+	}
+	if(points.size()==0){
+		return Point(1000, 1000, W, H);
+	}else{
+		int indice = 0;
+		int val = 0;
+		for (int i = 0; i < (signed)points.size(); i++)
+		{
+			if(indpoints[i]>val){
+				val = indpoints[i];
+				indice = i;
+			}
+		}
 
+	}
+	return pointinterm;
+}
+
+Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
+	Point origine = seg->getorogine();
+	Point extremite = seg->getextremite();
+	bool or = false;
+	bool ex = false;
+	Segment newseg;
+	newseg.setorogine(origine);
+	newseg.setextremite(extremite);
 	//recherche de points
 	
-	originechangee = ajoutpoint(&(seg->getorogine()), &(seg->getextremite()), liste, n, distancemaxpoints, W, H);
-	extremitechangee = ajoutpoint(&(seg->getextremite()), &(seg->getorogine()), liste, n, distancemaxpoints, W, H);
+	origine = ajoutpointconfondu(&(seg->getorogine()), liste, n, distancemaxpoints, W, H);
+	if(origine.getx()<1){
+		or = true;
+		newseg.setorogine(origine);
+	}
 
-	//si pas de points trouvés, recherche de parallèles
+	extremite = ajoutpointconfondu(&(seg->getextremite()), liste, n, distancemaxpoints, W, H);
+	if(extremite.getx()<1){
+		ex = true;
+		newseg.setextremite(extremite);
+	}
 
 	//si pas trouvés, recherche de perpendiculaire
+	if(!or){
+		origine = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
+		if(origine.getx()<1){
+			or = true;
+			newseg.setorogine(origine);
+		}
+	}
+	if(!ex){
+		extremite = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
+		if(extremite.getx()<1){
+			ex = true;
+			newseg.setextremite(extremite);
+		}
+	}
+	//si pas de points trouvés, recherche de parallèles
+
+	
+	
+	return newseg;
 }
 
 

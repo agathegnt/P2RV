@@ -1,7 +1,6 @@
 //=========== LIGNE BRISEE ================================
-
+/*
 #include "LigneBrisee.h"
-
 //Constructeur
 LigneBrisee::LigneBrisee(){
 	table = vector<Segment>(0);
@@ -19,10 +18,10 @@ void LigneBrisee::ajoutSegment(Segment s){
 }
 
 //fonction pour tracer la Forme
-void LigneBrisee::tracer(){
+void Trait::tracer(){
 	int taille = table.size();
 	for (int i = 0; i < taille; i++)
 	{
 		table[i].tracer();
 	}
-}
+}*/

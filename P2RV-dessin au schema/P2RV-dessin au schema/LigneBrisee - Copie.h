@@ -1,7 +1,6 @@
-#pragma once
+/*#pragma once
 
-#include "Segment.h"
-#include "Trait.h"
+#include "Forme.h"
 
 //Une LigneBrisee est une succession de Segments
 struct LigneBrisee : Forme
@@ -21,4 +20,4 @@ public:
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
-};
+};*/

@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 
-class Forme
+struct Forme
 {
 protected:
 	int type;

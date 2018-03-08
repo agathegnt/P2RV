@@ -96,7 +96,9 @@ void vMouse(int button, int state, int x, int y)
 				seg->setextremite(p2);
 				liste.pop_back();
 				liste.push_back(seg);
-				AnalyseSegment(seg, liste, n, distancepoint, W, H);
+				*seg = AnalyseSegment(seg, liste, n, distancepoint, W, H);
+				liste.pop_back();
+				liste.push_back(seg);
 			}else{
 				if(IsClosed (*TraitaTester, W, distancemaxclosed)){
 					Cercle* cercle = new Cercle();
