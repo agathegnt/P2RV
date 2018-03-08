@@ -1,9 +1,10 @@
 //=========== LIGNE BRISEE ================================
-/*
+
 #include "LigneBrisee.h"
 //Constructeur
 LigneBrisee::LigneBrisee(){
 	table = vector<Segment>(0);
+	type = LIGNEBRISEE;
 }
 
 //Getters
@@ -24,4 +25,4 @@ void Trait::tracer(){
 	{
 		table[i].tracer();
 	}
-}*/
+}

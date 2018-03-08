@@ -9,7 +9,7 @@ float distanceP(Point P1, Point P2, int W, int H) {
 }
 
 
-//retourne vrai si les deux segments passés en arguments sont presques perpendiculaires
+//retourne vrai si les deux segments passï¿½s en arguments sont presques perpendiculaires
 bool IsPerpendicular (Segment f1, Segment f2)
 {
 	bool perpendicular = false;
@@ -27,7 +27,7 @@ bool IsPerpendicular (Segment f1, Segment f2)
 }
 
 
-//retourne vrai si les deux segments passés en arguments sont presques parallèles
+//retourne vrai si les deux segments passï¿½s en arguments sont presques parallï¿½les
 bool IsParallel (Segment f1, Segment f2)
 {
 	//calcul du produit scalaire
@@ -54,7 +54,7 @@ bool IsClosed (Trait trait, int W, int distancemaxclosed)
 	if (table.size()>5)
 	{
 		Point vector = table[table.size()-1] - table[0];
-		if (vector.norme()*W<=distancemaxclosed)//si les deux extrémités du trait sont proches, alors la forme est presque fermée
+		if (vector.norme()*W<=distancemaxclosed)//si les deux extrï¿½mitï¿½s du trait sont proches, alors la forme est presque fermï¿½e
 		{
 			closed = true;
 		}
@@ -62,10 +62,25 @@ bool IsClosed (Trait trait, int W, int distancemaxclosed)
 	return closed;
 }
 
+//determine si la ligne brisee est fermee ou pas
+bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
+{
+	bool closed = false;
+	vector<Segment> table = ligne.getTable();
+	Point debut = table[0].getorogine();
+	Point fin = table[table.size()-1].getextremite();
+	Point vector = fin - debut;
+	//si les deux extremites du trait sont proches, alors la forme est presque fermee
+	if (vector.norme()*W<=distancemaxclosed)
+	{
+		closed = true;
+	}
+	return closed;
+}
 
 //=========== ANALYSE SEGMENT ================================
 
-//détermine si un trait est presque un segment ou non
+//dï¿½termine si un trait est presque un segment ou non
 bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
@@ -79,7 +94,7 @@ bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
 	for (int k = 0; k < j; k++){//pour chaque point du trait
 		BC = distanceP(nuage[k], nuage[j-1], W, H);
 		AC = distanceP(nuage[k], nuage[0], W, H);
-		distot += sqrt(abs(AC*AC - ((ABcarre+AC*AC-BC*BC) / AB2) * ((ABcarre+AC*AC-BC*BC) / AB2)));//calcule la distance entre le point considéré et le segment reliant les extrémités du trait et l'ajoute à distot
+		distot += sqrt(abs(AC*AC - ((ABcarre+AC*AC-BC*BC) / AB2) * ((ABcarre+AC*AC-BC*BC) / AB2)));//calcule la distance entre le point considï¿½rï¿½ et le segment reliant les extrï¿½mitï¿½s du trait et l'ajoute ï¿½ distot
 	}
 	if (distancemaxsegment*AB > distot) {//on accepte une erreur plus importante si le trait est plus long, d'ou la multiplication par AB
 		return true;
@@ -89,7 +104,7 @@ bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
 
 //=========== ANALYSE CERCLE ================================
 
-//détermine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le paramètre cercle
+//determine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le parametre cercle
 bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
@@ -104,10 +119,10 @@ bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, in
 		distmoy += distanceP(centre, nuage[k], W, H);
 	}
 	distmoy = distmoy/j;
-	for (int k = 0; k < j; k++){//on calcule la somme des écarts à la distance moyenne
+	for (int k = 0; k < j; k++){//on calcule la somme des ï¿½carts ï¿½ la distance moyenne
 		distot += abs((distanceP(centre, nuage[k], W, H)-distmoy));
 	}
-	if (distancemaxcercle > distot) {//si cet écart est suffisamment petit, on a bien un cercle
+	if (distancemaxcercle > distot) {//si cet ï¿½cart est suffisamment petit, on a bien un cercle
 		cercle.setcentre(centre);
 		cercle.setrayon(distmoy*2/W);
 		return true;
@@ -127,7 +142,7 @@ int cherchevec(Point p, vector<Point> points){
 	return -1;
 }
 
-//cherche près de quels points importants de la liste de formes se trouve p, et le déplace au point le plus intéressant (si il existe); retourne true si déplace le point
+//cherche prï¿½s de quels points importants de la liste de formes se trouve p, et le dï¿½place au point le plus intï¿½ressant (si il existe); retourne true si dï¿½place le point
 bool ajoutpoint(Point* p, Point* bougepas, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
 	cout<<"analyse 1 extremite"<<endl;
 	vector<Point> points;
@@ -215,19 +230,19 @@ void AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpo
 	bool extremitechangee = false;
 
 	//recherche de points
-	
+
 	originechangee = ajoutpoint(&(seg->getorogine()), &(seg->getextremite()), liste, n, distancemaxpoints, W, H);
 	extremitechangee = ajoutpoint(&(seg->getextremite()), &(seg->getorogine()), liste, n, distancemaxpoints, W, H);
 
-	//si pas de points trouvés, recherche de parallèles
+	//si pas de points trouves, recherche de paralleles
 
-	//si pas trouvés, recherche de perpendiculaire
+	//si pas trouves, recherche de perpendiculaire
 }
 
 
 //=========== ANALYSE LIGNE BRISEE ================================
 
-/*bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int W, int H) {
+bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, float distancemax, int W, int H) {
 	//booleen retourne
 	bool estLigne = false;
 
@@ -255,7 +270,7 @@ void AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpo
 				//ajout de ce segment a la ligne BRISEE
 				ligne.ajoutSegment(segment_tmp);
 				//reinitialisation des donnees temporaires
-				debut = cpt;
+				debut = cpt-1;
 				trait_tmp = Trait();
 				trait_tmp.ajout(nuage[debut]);
 		}
@@ -270,4 +285,68 @@ void AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpo
 	}
 	return estLigne;
 }
-*/
+
+//=========== ANALYSE RECTANGLE ================================
+
+bool estRectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, int distancemaxclosed){
+	//booleen retourne
+	bool est_rectangle = false;
+	//table des segments
+	vector<Segment> segmentTable = ligne.getTable();
+
+	if (segmentTable.size()==4)
+	{
+		//forme fermee
+		if (IsClosedLigne (ligne, W, distancemaxclosed))
+		{
+			//si les segments opposes sont paralleles
+			if (IsParallel (segmentTable[0], segmentTable[2]) && IsParallel (segmentTable[1], segmentTable[3])
+				//et si les deux premiers segments sont perprendiculaires
+				&& IsPerpendicular (segmentTable[0], segmentTable[1]))
+				{
+					est_rectangle = true;
+					rectangle.setRef(segmentTable[0].getorogine());
+					rectangle.setOppose(segmentTable[2].getorogine());
+				}
+		}
+	}
+}
+
+//=========== ANALYSE POLYGONE ================================
+
+bool estPolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int ecartmax){
+	//booleen retourne
+	bool est_polygone = true;
+
+	vector<Segment> table = ligne.getTable();
+	int reference = 0;
+
+	//forme fermee
+	if (IsClosedLigne (ligne, W, ecartmax))
+	{
+		//definition de la taille reference
+		for (int i=0; i<table.size(); i++)
+		{
+			reference += distanceP(table[i].getorogine(), table[i].getextremite(), W, H);
+		}
+		reference = reference / table.size();
+		//comparaison de la reference avec les autres segments
+		for (int i=0; i<table.size(); i++)
+		{
+			if (reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax)
+			{
+				est_polygone *= true;
+			}
+			else {est_polygone *= false;}
+		}
+	}
+	else {est_polygone *= false;}
+	//definition du polygone si c'en est un
+	if (est_polygone)
+	{
+		polygone.setPremier(table[0].getorogine());
+		polygone.setDirection(table[0].getextremite() - table[0].getorogine());
+		polygone.setSommets(table.size());
+	}
+	return est_polygone;
+}

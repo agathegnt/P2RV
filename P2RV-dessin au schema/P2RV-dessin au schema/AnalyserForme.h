@@ -4,7 +4,9 @@
 #include "Arc.h"
 #include "Trait.h"
 #include "Segment.h"
-//#include "LigneBrisee.h"
+#include "LigneBrisee.h"
+#include "Rectangle.h"
+#include "Polygone.h"
 
 float distanceP(Point, Point);
 bool IsPerpendicular (Segment, Segment);
