@@ -6,16 +6,20 @@ struct Forme
 {
 protected:
 	int type;
+	Point origine;
+	Point extremite;
+	Point centre;
 public:
 	Forme(){}
 	int gettype();
 	virtual void tracer(){}
 	virtual void ajout(Point p){}
-	virtual void setorogine(Point o){}
-	virtual Point getorogine(){return Point();}
-	virtual void setextremite(Point e){}
-	virtual Point getextremite(){return Point();}
-	virtual Point getcentre(){return Point();}
+	void setorigine(Point o);
+	Point getorigine();
+	void setextremite(Point e);
+	Point getextremite();
+	Point getcentre();
+	void setcentre(Point o);
 };
 
 

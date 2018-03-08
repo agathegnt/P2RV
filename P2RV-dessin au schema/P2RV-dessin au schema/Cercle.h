@@ -5,7 +5,6 @@
 struct Cercle : Forme
 {
 private:
-	Point centre;
 	float rayon;
 
 public:
@@ -14,8 +13,8 @@ public:
 	Cercle(Point p, float r);
 
 	//getters/setters
-	virtual Point getcentre();
-	void setcentre(Point o);
+	/*virtual Point getcentre();
+	void setcentre(Point o);*/
 	float getrayon();
 	void setrayon(float r);
 

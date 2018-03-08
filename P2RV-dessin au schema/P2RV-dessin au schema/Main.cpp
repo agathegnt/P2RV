@@ -92,7 +92,7 @@ void vMouse(int button, int state, int x, int y)
 				Point p1 = ((*TraitaTester).getTable())[0];
 				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
 				Segment* seg = new Segment();
-				seg->setorogine(p1);
+				seg->setorigine(p1);
 				seg->setextremite(p2);
 				liste.pop_back();
 				liste.push_back(seg);
