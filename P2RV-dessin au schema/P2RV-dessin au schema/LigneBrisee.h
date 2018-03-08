@@ -21,4 +21,3 @@ public:
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
-};
