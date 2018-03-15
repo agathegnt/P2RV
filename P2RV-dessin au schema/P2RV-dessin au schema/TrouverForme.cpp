@@ -1,4 +1,4 @@
-# trouverformes.cpp
+#trouverformes.cpp
 
 #include "Forme.h"
 

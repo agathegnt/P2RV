@@ -4,7 +4,6 @@
 Segment::Segment(){
 	origine = Point();
 	extremite = Point();
-	centre=Point();
 	type = SEGMENT;
 }
 
@@ -12,15 +11,14 @@ Segment::Segment(){
 Segment::Segment(Point o, Point e){
 	origine = o;
 	extremite = e;
-	centre=Point();
 	type = 1;
 }
 
 //Getters/Setters
-/*Point Segment::getorigine(){
+Point Segment::getorogine(){
 	return origine;
 }
-void Segment::setorigine(Point o){
+void Segment::setorogine(Point o){
 	origine = o;
 }
 Point Segment::getextremite(){
@@ -28,7 +26,7 @@ Point Segment::getextremite(){
 }
 void Segment::setextremite(Point e){
 	extremite = e;
-}*/
+}
 
 //fonction pour tracer la Forme
 void Segment::tracer(){
@@ -37,13 +35,4 @@ void Segment::tracer(){
 		glVertex2f(origine.getx(), origine.gety());
 		glVertex2f(extremite.getx(), extremite.gety());
 	glEnd();
-}
-
-//surcharge
-bool operator==(Segment const& s1, Segment const& s2){
-	// on copie les points pour ne pas les modifier
-	Segment copie1 = s1;
-	Segment copie2 = s2;
-
-	return (copie1.getorigine()==copie2.getorigine() && copie1.getextremite()==copie2.getextremite());
 }

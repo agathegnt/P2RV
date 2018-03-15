@@ -2,8 +2,6 @@
 
 //Constructeur, avec centre, rayon, et deux valeurs d'angles en radians
 Arc::Arc(Point c, float r, float o, float e){
-	origine = Point();
-	extremite = Point();
 	centre = c;
 	rayon = r;
 	if(o<e){
@@ -17,9 +15,9 @@ Arc::Arc(Point c, float r, float o, float e){
 }
 
 //Getters/setters
-/*Point Arc::getcentre(){
+Point Arc::getcentre(){
 	return centre;
-}*/
+}
 
 //fonction pour tracer la Forme
 void Arc::tracer(){

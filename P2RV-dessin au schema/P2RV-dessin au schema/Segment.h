@@ -5,6 +5,8 @@
 struct Segment : Forme
 {
 private:
+	Point origine;
+	Point extremite;
 
 public:
 	//Constructeur
@@ -12,10 +14,10 @@ public:
 	Segment(Point o, Point e);
 
 	//Getters/Setters
-	/*virtual Point getorigine();
-	virtual void setorigine(Point o);
+	virtual Point getorogine();
+	virtual void setorogine(Point o);
 	virtual Point getextremite();
-	virtual void setextremite(Point e);*/
+	virtual void setextremite(Point e);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
@@ -24,6 +26,3 @@ public:
 #ifndef SEGMENT
 #define SEGMENT 1
 #endif
-
-//surcharge
-bool operator==(Segment const& p1, Segment const& p2);

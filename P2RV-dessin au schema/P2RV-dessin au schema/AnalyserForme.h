@@ -14,10 +14,11 @@ bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);
 bool trouversegment(Trait, int, int, int);
 bool trouvercercle(Trait, Cercle&, int, int, int);
+bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int distanceminligne, int W, int H);
+bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, int distancemaxclosed);
+bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int ecartmax);
 
-int cherche_point_vec(Point, vector<Point>);
-int cherche_segment_vec(Segment, vector<Forme*>);
+
+int cherchevec(Point, vector<Point>);
 Point ajoutpointconfondu(Point*, vector<Forme*>, int, int, int, int);
-Point ajoutperpendicularite(Segment, bool, vector<Forme*>, int, int, int, int);
-Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);
 Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);

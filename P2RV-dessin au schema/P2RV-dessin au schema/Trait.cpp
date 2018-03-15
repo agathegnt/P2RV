@@ -2,9 +2,6 @@
 
 //Constructeur
 Trait::Trait(){
-	origine = Point();
-	extremite = Point();
-	centre = Point();
 	table = vector<Point>(0);
 	type = TRAIT;
 }
