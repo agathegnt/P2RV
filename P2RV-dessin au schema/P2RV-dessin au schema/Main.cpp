@@ -9,9 +9,11 @@ int W;
 int H;
 
 int distancemaxclosed = 20;
+int distancemaxclosedligne = 40;
 int distancemaxcercle = 1000;
-int distancemaxsegment = 1;
+int distancemaxsegment = 2;
 int distancepoint = 20;
+int distanceminligne = 1;
 
 bool tracer = false;
 Trait* TraitaTester;
@@ -92,7 +94,7 @@ void vMouse(int button, int state, int x, int y)
 				Point p1 = ((*TraitaTester).getTable())[0];
 				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
 				Segment* seg = new Segment();
-				seg->setorigine(p1);
+				seg->setorogine(p1);
 				seg->setextremite(p2);
 				liste.pop_back();
 				liste.push_back(seg);
@@ -105,6 +107,27 @@ void vMouse(int button, int state, int x, int y)
 					if(trouvercercle(*TraitaTester, *cercle, distancemaxcercle, W, H)){
 						liste.pop_back();
 						liste.push_back(cercle);
+					}
+				}
+				else
+				{
+					LigneBrisee* ligne = new LigneBrisee ();
+					if (trouverlignebrisee(*TraitaTester, *ligne, distancemaxsegment, distanceminligne, W, H))
+					{
+						liste.pop_back();
+						liste.push_back(ligne);
+						Rectangle* rectangle = new Rectangle();
+						Polygone* polygone = new Polygone();
+						if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
+						{
+							liste.pop_back();
+							liste.push_back(rectangle);
+						}
+						else if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
+						{
+							liste.pop_back();
+							liste.push_back(polygone);
+						}
 					}
 				}
 			}

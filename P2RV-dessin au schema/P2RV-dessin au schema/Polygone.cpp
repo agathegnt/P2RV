@@ -26,7 +26,7 @@ void Polygone::setSommets (int s)
 
 //fonction pour tracer la forme
 void Polygone::tracer(){
-  float angle =  (1 - 2/sommets)*180;
+  float angle =  (1.0-2.0/sommets)*180;
 	glBegin(GL_POLYGON);
 		glColor3f(1., 0., 0.);
     //initialisation de x et y

@@ -2,8 +2,6 @@
 
 //Constructeur par défaut
 Cercle::Cercle(){
-	origine = Point();
-	extremite = Point();
 	centre = Point();
 	rayon = 0;
 	type = CERCLE;
@@ -11,20 +9,18 @@ Cercle::Cercle(){
 
 //Constructeur avec centre et rayon
 Cercle::Cercle(Point p, float r){
-	origine = Point();
-	extremite = Point();
 	centre = p;
 	rayon = r;
 	type = 2;
 }
 
 //Getters/Setters
-/*Point Cercle::getcentre(){
+Point Cercle::getcentre(){
 	return centre;
 }
 void Cercle::setcentre(Point p){
 	centre = p;
-}*/
+}
 float Cercle::getrayon(){
 	return rayon;
 }
