@@ -4,7 +4,7 @@
 #include "Trait.h"
 
 //Une LigneBrisee est une succession de Segments
-struct LigneBrisee : Forme
+class LigneBrisee : public Forme
 {
 private:
 	vector<Segment> table;

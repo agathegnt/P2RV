@@ -2,7 +2,7 @@
 
 #include "Forme.h"
 
-struct Rectangle : Forme
+class Rectangle : public Forme
 {
 private:
 	Point ref;

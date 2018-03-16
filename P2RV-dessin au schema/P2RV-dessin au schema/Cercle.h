@@ -2,7 +2,7 @@
 
 #include "Forme.h"
 
-struct Cercle : Forme
+class Cercle : public Forme
 {
 private:
 	float rayon;

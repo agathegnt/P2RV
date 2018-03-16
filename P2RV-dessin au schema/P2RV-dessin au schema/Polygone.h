@@ -3,7 +3,7 @@
 #include "Forme.h"
 
 //structure polygone regulier
-struct Polygone : Forme
+class Polygone : public Forme
 {
 private:
 	Point premier;

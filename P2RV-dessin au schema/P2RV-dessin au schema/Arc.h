@@ -2,7 +2,7 @@
 
 #include "Forme.h"
 
-struct Arc : Forme
+class Arc : public Forme
 {
 private:
 	float rayon;

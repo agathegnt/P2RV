@@ -2,7 +2,7 @@
 
 #include "Forme.h"
 
-struct Segment : Forme
+class Segment : public Forme
 {
 private:
 
