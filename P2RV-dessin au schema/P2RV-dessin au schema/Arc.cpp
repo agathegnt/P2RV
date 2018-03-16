@@ -11,6 +11,7 @@ Arc::Arc(Point c, float r, float o, float e){
 		angle1 = e;
 		angle2 = o;
 	}
+	afficher = true;
 	type = ARC;
 }
 

@@ -4,6 +4,7 @@
 Rectangle::Rectangle(){
 	ref = Point();
 	oppose = Point();
+	afficher = true;
 	type = RECTANGLE;
 }
 
@@ -11,6 +12,7 @@ Rectangle::Rectangle(){
 Rectangle::Rectangle(Point r, Point o){
 	ref = r;
 	oppose = o;
+	afficher = true;
 	type = RECTANGLE;
 }
 

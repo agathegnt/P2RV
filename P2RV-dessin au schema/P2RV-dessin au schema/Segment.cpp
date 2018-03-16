@@ -4,6 +4,7 @@
 Segment::Segment(){
 	origine = Point();
 	extremite = Point();
+	afficher = true;
 	type = SEGMENT;
 }
 
@@ -11,7 +12,8 @@ Segment::Segment(){
 Segment::Segment(Point o, Point e){
 	origine = o;
 	extremite = e;
-	type = 1;
+	afficher = true;
+	type = SEGMENT;
 }
 
 //Getters/Setters

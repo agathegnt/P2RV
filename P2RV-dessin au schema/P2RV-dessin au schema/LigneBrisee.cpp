@@ -5,6 +5,7 @@
 //Constructeur
 LigneBrisee::LigneBrisee(){
 	table = vector<Segment>(0);
+	afficher = true;
 	type = LIGNEBRISEE;
 }
 

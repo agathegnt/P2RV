@@ -399,14 +399,12 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 		//comparaison de la reference avec les autres segments
 		for (int i=0; i<table.size(); i++)
 		{
-			if (reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax)
+			if (!(reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax))
 			{
-				est_polygone *= true;
+				est_polygone = false;
 			}
-			else {est_polygone *= false;}
 		}
-	}
-	else {est_polygone *= false;}
+	} else {est_polygone = false;}
 	//definition du polygone si c'en est un
 	if (est_polygone)
 	{

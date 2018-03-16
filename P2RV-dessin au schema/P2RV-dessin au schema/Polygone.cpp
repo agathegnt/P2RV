@@ -4,7 +4,8 @@
 Polygone::Polygone(){
 	premier = Point();
 	direction = Point();
-  sommets = 0;
+	afficher = true;
+	sommets = 0;
 	type = POLYGONE;
 }
 

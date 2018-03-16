@@ -6,6 +6,7 @@ class Forme
 {
 protected:
 	int type;
+	bool afficher;
 public:
 	Forme(){}
 	int gettype();

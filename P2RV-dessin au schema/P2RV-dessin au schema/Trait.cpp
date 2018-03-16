@@ -3,6 +3,7 @@
 //Constructeur
 Trait::Trait(){
 	table = vector<Point>(0);
+	afficher = true;
 	type = TRAIT;
 }
 
