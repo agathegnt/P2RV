@@ -17,10 +17,10 @@ Segment::Segment(Point o, Point e){
 }
 
 //Getters/Setters
-Point Segment::getorogine(){
+Point Segment::getorigine(){
 	return origine;
 }
-void Segment::setorogine(Point o){
+void Segment::setorigine(Point o){
 	origine = o;
 }
 Point Segment::getextremite(){

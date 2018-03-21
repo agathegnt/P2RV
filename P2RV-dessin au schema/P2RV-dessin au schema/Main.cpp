@@ -114,6 +114,7 @@ void vMouse(int button, int state, int x, int y)
 					LigneBrisee* ligne = new LigneBrisee ();
 					if (trouverlignebrisee(*TraitaTester, *ligne, distancemaxsegment, distanceminligne, W, H))
 					{
+						//ligne = LisseLigneBrisee(*ligne);
 						liste.pop_back();
 						liste.push_back(ligne);
 						Rectangle* rectangle = new Rectangle();

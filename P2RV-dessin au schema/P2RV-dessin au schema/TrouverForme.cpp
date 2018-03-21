@@ -1,6 +1,6 @@
-#trouverformes.cpp
+//trouverformes.cpp
 
-#include "Forme.h"
+/*#include "Forme.h"
 
 bool trouversegment(Trait nuage, float distancemax) {
 	int j = nuage.length();
@@ -59,4 +59,4 @@ bool trouversegment(Trait nuage, float distancemax) {
 
 float distance(Point P1, Point P2) {
 	return sqrt((P1.position[0] - P2.position[0] + P1.position[1] - P2.position[1] + P1.position[2] - P2.position[2])**2);
-}
+}*/

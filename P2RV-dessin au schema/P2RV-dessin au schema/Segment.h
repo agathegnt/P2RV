@@ -14,8 +14,8 @@ public:
 	Segment(Point o, Point e);
 
 	//Getters/Setters
-	virtual Point getorogine();
-	virtual void setorogine(Point o);
+	virtual Point getorigine();
+	virtual void setorigine(Point o);
 	virtual Point getextremite();
 	virtual void setextremite(Point e);
 

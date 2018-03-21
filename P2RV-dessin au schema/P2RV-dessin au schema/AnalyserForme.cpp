@@ -349,6 +349,27 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int di
 	return estLigne;
 }
 
+LigneBrisee* LisseLigneBrisee(LigneBrisee ligne){
+	LigneBrisee *newligne = new LigneBrisee();
+	int taille = (ligne.getTable()).size();
+	newligne->ajoutSegment(Segment());
+	(newligne->getTable()[0]).setorigine((ligne.getTable()[0]).getorigine());
+	for (int i = 0; i < taille-1; i++)
+	{
+		newligne->ajoutSegment(Segment());
+		Point *p = new Point();
+		Point *p1 = new Point();
+		Point *p2 = new Point();
+		*p1=ligne.getTable()[i].getextremite();
+		*p2=ligne.getTable()[i+1].getorigine();
+		*p=(*p1+*p2)/2;
+		newligne->getTable()[i].setextremite(*p);
+		newligne->getTable()[i+1].setorogine(*p);
+	}
+	(newligne->getTable()[taille-1]).setextremite((ligne.getTable()[taille-1]).getextremite());
+	return newligne;
+}
+
 //=========== ANALYSE RECTANGLE ================================
 
 bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, int distancemaxclosed){
@@ -391,13 +412,13 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 	if (IsClosedLigne (ligne, W, ecartmax))
 	{
 		//definition de la taille reference
-		for (int i=0; i<table.size(); i++)
+		for (int i=0; (unsigned)i<table.size(); i++)
 		{
 			reference += distanceP(table[i].getorogine(), table[i].getextremite(), W, H);
 		}
 		reference = reference / table.size();
 		//comparaison de la reference avec les autres segments
-		for (int i=0; i<table.size(); i++)
+		for (int i=0; (unsigned)i<table.size(); i++)
 		{
 			if (!(reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax))
 			{
