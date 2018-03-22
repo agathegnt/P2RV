@@ -319,18 +319,18 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int di
 		//si avec ce point supplementaire on perd le segment
 		if (!trouversegment(trait_tmp, distancemax, W, H))
 		{
-				//on cree un segment avec les points precedents
-				Segment segment_tmp = Segment(nuage[debut], nuage[cpt-1]);
-				//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
-				if (distanceP(nuage[debut],nuage[cpt-1],W,H)  > distanceminligne)
-				{
-					ligne.ajoutSegment(segment_tmp);
-					estLigne = true;
-				}
-				//reinitialisation des donnees temporaires
-				debut = cpt;
-				trait_tmp = Trait();
-				trait_tmp.ajout(nuage[debut]);
+			//on cree un segment avec les points precedents
+			Segment segment_tmp = Segment(nuage[debut], nuage[cpt-1]);
+			//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
+			if (distanceP(nuage[debut],nuage[cpt-1],W,H)  > distanceminligne)
+			{
+				ligne.ajoutSegment(segment_tmp);
+				estLigne = true;
+			}
+			//reinitialisation des donnees temporaires
+			debut = cpt;
+			trait_tmp = Trait();
+			trait_tmp.ajout(nuage[debut]);
 		}
 		else if (cpt == (taille-1))
 		{
@@ -349,25 +349,19 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int di
 	return estLigne;
 }
 
-LigneBrisee* LisseLigneBrisee(LigneBrisee ligne){
-	LigneBrisee *newligne = new LigneBrisee();
+void LisseLigneBrisee(LigneBrisee& ligne){
 	int taille = (ligne.getTable()).size();
-	newligne->ajoutSegment(Segment());
-	(newligne->getTable()[0]).setorigine((ligne.getTable()[0]).getorigine());
 	for (int i = 0; i < taille-1; i++)
 	{
-		newligne->ajoutSegment(Segment());
-		Point *p = new Point();
-		Point *p1 = new Point();
-		Point *p2 = new Point();
-		*p1=ligne.getTable()[i].getextremite();
-		*p2=ligne.getTable()[i+1].getorigine();
-		*p=(*p1+*p2)/2;
-		newligne->getTable()[i].setextremite(*p);
-		newligne->getTable()[i+1].setorogine(*p);
+		Point p = Point();
+		Point p1 = Point();
+		Point p2 = Point();
+		p1=ligne.getTable()[i].getextremite();
+		p2=ligne.getTable()[i+1].getorigine();
+		p=(p1+p2)/2;
+		ligne.setpoint(false, i, p);
+		ligne.setpoint(true, i+1, p);
 	}
-	(newligne->getTable()[taille-1]).setextremite((ligne.getTable()[taille-1]).getextremite());
-	return newligne;
 }
 
 //=========== ANALYSE RECTANGLE ================================
