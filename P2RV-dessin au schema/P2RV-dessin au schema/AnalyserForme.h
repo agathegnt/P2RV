@@ -8,7 +8,7 @@
 #include "Rectangle.h"
 #include "Polygone.h"
 
-float distanceP(Point, Point);
+float distanceP(Point, Point, int, int);
 bool IsPerpendicular (Forme, Segment);
 bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);

@@ -67,7 +67,7 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 {
 	bool closed = false;
 	vector<Segment> table = ligne.getTable();
-	Point debut = table[0].getorogine();
+	Point debut = table[0].getorigine();
 	Point fin = table[table.size()-1].getextremite();
 	Point vector = fin - debut;
 	//si les deux extremites du trait sont proches, alors la forme est presque fermee
@@ -390,8 +390,23 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 				if (IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;
-					rectangle.setRef(segmentTable[0].getorogine());
-					rectangle.setOppose(segmentTable[2].getorogine());
+					//parametrage du point A
+					rectangle.setA(segmentTable[0].getorigine());
+					//parametrage du point B
+					rectangle.setB(segmentTable[1].getorigine());
+					//vecteur AB
+					Point vectAB = Point();
+					vectAB.setx(segmentTable[1].getorigine().getx() - segmentTable[0].getorigine().getx());
+					vectAB.sety(segmentTable[1].getorigine().gety() - segmentTable[0].getorigine().gety());
+					//equation droite
+					float gamma = -vectAB.getx()*segmentTable[1].getorigine().getx() -vectAB.gety()*segmentTable[1].getorigine().gety();
+					// calcul du point C
+					float xc = (-(float)vectAB.gety()*(float)segmentTable[2].getorigine().gety()-gamma)/(float)vectAB.getx();
+					cout<<xc;
+					Point C = Point ();
+					C.setx(xc);
+					C.sety(segmentTable[2].getorigine().gety());
+					rectangle.setC(C);
 				}
 			}
 		}

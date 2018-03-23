@@ -111,12 +111,14 @@ void vMouse(int button, int state, int x, int y)
 				}
 				else
 				{
+					//test ligne brisee
 					LigneBrisee* ligne = new LigneBrisee ();
 					if (trouverlignebrisee(*TraitaTester, *ligne, distancemaxsegment, distanceminligne, W, H))
 					{
 						//ligne = LisseLigneBrisee(*ligne);
 						liste.pop_back();
 						liste.push_back(ligne);
+						//test si polynome ou rectangle
 						Rectangle* rectangle = new Rectangle();
 						Polygone* polygone = new Polygone();
 						if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
@@ -163,7 +165,7 @@ int main(int argc, char **argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200,200);
 	glutInitWindowSize(600,600);
-	glutCreateWindow("Bras robot");
+	glutCreateWindow("Dessin");
 	W=600;
 	H=600;
 
@@ -187,5 +189,6 @@ int main(int argc, char **argv) {
 
 	// enter GLUT event processing cycle
 	glutMainLoop();
+
 	return 1;
 }

@@ -5,17 +5,19 @@
 class Rectangle : public Forme
 {
 private:
-	Point ref;
-	Point oppose;
+	Point pointA;
+	Point pointB;
+	Point pointC;
 
 public:
 	//Constructeur
 	Rectangle();
-	Rectangle(Point r, Point o);
+	Rectangle(Point A, Point B, Point C);
 
 	//Setters
-	void setRef (Point r);
-	void setOppose (Point o);
+	void setA (Point A);
+	void setB (Point B);
+	void setC (Point C);
 
 	//fonction pour tracer la Forme
 	virtual void tracer();
