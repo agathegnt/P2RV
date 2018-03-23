@@ -1,7 +1,7 @@
 #include "AnalyserForme.h"
 
-vector<Forme*> liste;//toutes les formes présentes
-int n = 0;//le nombre de formes présentes
+vector<Forme*> liste;//toutes les formes prï¿½sentes
+int n = 0;//le nombre de formes prï¿½sentes
 
 
 //taille fenetre
@@ -19,7 +19,7 @@ bool tracer = false;
 Trait* TraitaTester;
 // Fonction de redimensionnement de la fenetre
 void redimensionner(int w, int h) {
-   
+
    // On evite une division par 0
    // la fenetre ne peut avoir une largeur de 0
    if (h == 0)
@@ -28,18 +28,18 @@ void redimensionner(int w, int h) {
    H=h*1.0;
    // Calcul du ratio
    float ratio =  (w * 1.0) / h;
-   
+
    glViewport(0, 0, w, h);
    // on charge la matrice identite
    glLoadIdentity();
-   
+
 }
 
 void affichageScene() {
    //On efface les tampons de couleur
    glClear(GL_COLOR_BUFFER_BIT);
    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  
+
 	//affichage principal
 	for (int i = 0; i < n; i++)
 	{
@@ -48,7 +48,7 @@ void affichageScene() {
 
 	// on echange les tampons d'affichage
 	glutSwapBuffers();
-	
+
 }
 
 void deplsouris(int x, int y) {
@@ -110,10 +110,14 @@ void vMouse(int button, int state, int x, int y)
 				liste.pop_back();
 				liste.push_back(cercle);
 			}
+<<<<<<< HEAD
 					/*else{
 						trouver arc de cercle
 					}*/
 		}				
+=======
+		}
+>>>>>>> 9e5ae96bb788dc7f43b7134b63646dde81fd9d97
 		break;
 	default:
 		printf("Erreur??\n");
@@ -144,11 +148,11 @@ int main(int argc, char **argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200,200);
 	glutInitWindowSize(600,600);
-	glutCreateWindow("Bras robot");
+	glutCreateWindow("Dessin");
 	W=600;
 	H=600;
 
-	
+
 	// enregistrement des callbacks d'affichage
 	// de redimensionnement et d'idle
 	glutDisplayFunc(affichageScene);
@@ -168,5 +172,6 @@ int main(int argc, char **argv) {
 
 	// enter GLUT event processing cycle
 	glutMainLoop();
+
 	return 1;
 }

@@ -402,8 +402,28 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 				if (IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;
+<<<<<<< HEAD
 					rectangle.setRef(segmentTable[0].getorigine());
 					rectangle.setOppose(segmentTable[2].getorigine());
+=======
+					//parametrage du point A
+					rectangle.setA(segmentTable[0].getorigine());
+					//parametrage du point B
+					rectangle.setB(segmentTable[1].getorigine());
+					//vecteur AB
+					Point vectAB = Point();
+					vectAB.setx(segmentTable[1].getorigine().getx() - segmentTable[0].getorigine().getx());
+					vectAB.sety(segmentTable[1].getorigine().gety() - segmentTable[0].getorigine().gety());
+					//equation droite
+					float gamma = -vectAB.getx()*segmentTable[1].getorigine().getx() -vectAB.gety()*segmentTable[1].getorigine().gety();
+					// calcul du point C
+					float xc = (-(float)vectAB.gety()*(float)segmentTable[2].getorigine().gety()-gamma)/(float)vectAB.getx();
+					cout<<xc;
+					Point C = Point ();
+					C.setx(xc);
+					C.sety(segmentTable[2].getorigine().gety());
+					rectangle.setC(C);
+>>>>>>> 9e5ae96bb788dc7f43b7134b63646dde81fd9d97
 				}
 			}
 		}
