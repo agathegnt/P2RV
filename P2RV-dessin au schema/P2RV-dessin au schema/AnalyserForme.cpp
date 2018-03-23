@@ -15,8 +15,8 @@ bool IsPerpendicular (Forme f1, Segment f2)
 	bool perpendicular = false;
 
     //calcul du produit scalaire
-    Point vector1 = f1.getextremite()-f1.getorogine();
-    Point vector2 = f2.getextremite()-f2.getorogine();
+    Point vector1 = f1.getextremite()-f1.getorigine();
+    Point vector2 = f2.getextremite()-f2.getorigine();
     int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety();
 
     if (prod_scal < 0.08)
@@ -31,8 +31,8 @@ bool IsPerpendicular (Forme f1, Segment f2)
 bool IsParallel (Forme f1, Segment f2)
 {
 	//calcul du produit scalaire
-	Point vector1 = f1.getextremite()-f1.getorogine();
-	Point vector2 = f2.getextremite()-f2.getorogine();
+	Point vector1 = f1.getextremite()-f1.getorigine();
+	Point vector2 = f2.getextremite()-f2.getorigine();
 	int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety();
 
 	//compare le produit scalaire au produit des normes des vecteurs
@@ -67,7 +67,7 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 {
 	bool closed = false;
 	vector<Segment> table = ligne.getTable();
-	Point debut = table[0].getorogine();
+	Point debut = table[0].getorigine();
 	Point fin = table[table.size()-1].getextremite();
 	Point vector = fin - debut;
 	//si les deux extremites du trait sont proches, alors la forme est presque fermee
@@ -167,7 +167,7 @@ Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxp
 					indpoints.push_back(1);
 				}
 			}
-			pointinterm = liste[i]->getorogine();
+			pointinterm = liste[i]->getorigine();
 			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
 				j = cherchevec(pointinterm, points);
 				if(j>=0){
@@ -254,19 +254,19 @@ Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, int n, int distan
 }
 
 Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	Point origine = seg->getorogine();
+	Point origine = seg->getorigine();
 	Point extremite = seg->getextremite();
 	bool or = false;
 	bool ex = false;
 	Segment newseg;
-	newseg.setorogine(origine);
+	newseg.setorigine(origine);
 	newseg.setextremite(extremite);
 	//recherche de points
 
-	origine = ajoutpointconfondu(&(seg->getorogine()), liste, n, distancemaxpoints, W, H);
+	origine = ajoutpointconfondu(&(seg->getorigine()), liste, n, distancemaxpoints, W, H);
 	if(origine.getx()<1){
 		or = true;
-		newseg.setorogine(origine);
+		newseg.setorigine(origine);
 	}
 
 	extremite = ajoutpointconfondu(&(seg->getextremite()), liste, n, distancemaxpoints, W, H);
@@ -280,7 +280,7 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 		origine = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
 		if(origine.getx()<1){
 			or = true;
-			newseg.setorogine(origine);
+			newseg.setorigine(origine);
 		}
 	}
 	if(!ex){
@@ -300,7 +300,7 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 
 //=========== ANALYSE LIGNE BRISEE ================================
 
-float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int distanceminligne, int distancemaxsegment, int W, int H) {
+float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distanceminligne, int distancemaxsegment, int W, int H) {
 	//booleen retourne
 	//bool estLigne = false;
 	float errtot = 0;
@@ -343,6 +343,7 @@ float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int d
 		}
 		else if (cpt == (taille-1))
 		{
+			errtot += errtmp;
 			//on cree un segment avec les derniers points
 			Segment segment_tmp = Segment(nuage[debut], nuage[cpt]);
 			//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
@@ -356,7 +357,7 @@ float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int d
 		cpt += 1;
 	}
 	//return estLigne;
-	return errtot;
+	return errtot/(ligne.getTable().size());
 }
 
 void LisseLigneBrisee(LigneBrisee& ligne, int distancemaxclosed, int W, int H){
@@ -401,8 +402,8 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 				if (IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;
-					rectangle.setRef(segmentTable[0].getorogine());
-					rectangle.setOppose(segmentTable[2].getorogine());
+					rectangle.setRef(segmentTable[0].getorigine());
+					rectangle.setOppose(segmentTable[2].getorigine());
 				}
 			}
 		}
@@ -425,13 +426,13 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 		//definition de la taille reference
 		for (int i=0; (unsigned)i<table.size(); i++)
 		{
-			reference += distanceP(table[i].getorogine(), table[i].getextremite(), W, H);
+			reference += distanceP(table[i].getorigine(), table[i].getextremite(), W, H);
 		}
 		reference = reference / table.size();
 		//comparaison de la reference avec les autres segments
 		for (int i=0; (unsigned)i<table.size(); i++)
 		{
-			if (!(reference - distanceP(table[i].getorogine(), table[i].getextremite(), W, H) <= ecartmax))
+			if (!(reference - distanceP(table[i].getorigine(), table[i].getextremite(), W, H) <= ecartmax))
 			{
 				est_polygone = false;
 			}
@@ -440,8 +441,8 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 	//definition du polygone si c'en est un
 	if (est_polygone)
 	{
-		polygone.setPremier(table[0].getorogine());
-		polygone.setDirection(table[0].getextremite() - table[0].getorogine());
+		polygone.setPremier(table[0].getorigine());
+		polygone.setDirection(table[0].getextremite() - table[0].getorigine());
 		polygone.setSommets(table.size());
 	}
 	return est_polygone;

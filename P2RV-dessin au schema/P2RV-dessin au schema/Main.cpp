@@ -70,45 +70,49 @@ void vMouse(int button, int state, int x, int y)
 			tracer = true;
 		} else {
 			tracer = false;
-			if(trouversegment(*TraitaTester, distancemaxsegment, W, H)){
+			Segment* seg = new Segment();
+			LigneBrisee* ligne = new LigneBrisee ();
+			Cercle* cercle = new Cercle();
+
+			float errseg = trouversegment(*TraitaTester, W, H);
+			float errligne = trouverlignebrisee(*TraitaTester, *ligne, distanceminligne, distancemaxsegment, W, H);
+			float errcercle = 100;
+
+			if(IsClosed (*TraitaTester, W, distancemaxclosed)){
+				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/400;
+			}
+			if(errseg <= errligne && errseg < errcercle){
 				Point p1 = ((*TraitaTester).getTable())[0];
 				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
-				Segment* seg = new Segment();
-				seg->setorogine(p1);
+				seg->setorigine(p1);
 				seg->setextremite(p2);
 				*seg = AnalyseSegment(seg, liste, n, distancepoint, W, H);
 				liste.pop_back();
 				liste.push_back(seg);
-			}else{
-				LigneBrisee* ligne = new LigneBrisee ();
-				if (trouverlignebrisee(*TraitaTester, *ligne, distancemaxsegment, distanceminligne, W, H)){
-					LisseLigneBrisee(*ligne);
+			}else if(errligne<errcercle){
+				LisseLigneBrisee(*ligne, distancemaxclosed, W, H);
+				liste.pop_back();
+				liste.push_back(ligne);
+
+				/*Rectangle* rectangle = new Rectangle();
+				if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
+				{
 					liste.pop_back();
-					liste.push_back(ligne);
-					Rectangle* rectangle = new Rectangle();
-					if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
-					{
-						liste.pop_back();
-						liste.push_back(rectangle);
-					}
-					Polygone* polygone = new Polygone();
-					if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
-					{
-						liste.pop_back();
-						liste.push_back(polygone);
-					}
-				}else{
-					if(IsClosed (*TraitaTester, W, distancemaxclosed)){
-						Cercle* cercle = new Cercle();
-						if(trouvercercle(*TraitaTester, *cercle, distancemaxcercle, W, H)){
-							liste.pop_back();
-							liste.push_back(cercle);
-						}
-					}/*else{
+					liste.push_back(rectangle);
+				}
+				Polygone* polygone = new Polygone();
+				if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
+				{
+					liste.pop_back();
+					liste.push_back(polygone);
+				}*/
+			}else{
+				liste.pop_back();
+				liste.push_back(cercle);
+			}
+					/*else{
 						trouver arc de cercle
 					}*/
-				}
-			}
 		}				
 		break;
 	default:

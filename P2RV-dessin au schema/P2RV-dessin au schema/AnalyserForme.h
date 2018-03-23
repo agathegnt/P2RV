@@ -15,7 +15,7 @@ bool IsClosed (Trait, int, int);
 bool IsClosedLigne (LigneBrisee, int, int);
 float trouversegment(Trait, int, int);
 float trouvercercle(Trait, Cercle&, int, int);
-bool trouverlignebrisee(Trait, LigneBrisee&, int, int, int, int);
+float trouverlignebrisee(Trait, LigneBrisee&, int, int, int, int);
 void LisseLigneBrisee(LigneBrisee&, int, int, int);
 bool trouverrectangle (LigneBrisee, Rectangle&, int, int, int);
 bool trouverpolygone (LigneBrisee, Polygone&, int, int, int);
