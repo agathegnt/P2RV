@@ -38,3 +38,11 @@ void Segment::tracer(){
 		glVertex2f(extremite.getx(), extremite.gety());
 	glEnd();
 }
+
+bool operator==(Segment const& seg1, Segment const& seg2){
+	// on copie les points pour ne pas les modifier
+	Segment copie1 = seg1;
+	Segment copie2 = seg2;
+
+	return (copie1.getorigine()==copie2.getorigine() && copie1.getextremite()==copie2.getextremite());
+}

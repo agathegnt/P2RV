@@ -14,6 +14,7 @@ public:
 	//Getters
 	vector<Point> getTable ();
 
+
 	//ajoute un poit au vecteur de points
 	virtual void ajout(Point p);
 

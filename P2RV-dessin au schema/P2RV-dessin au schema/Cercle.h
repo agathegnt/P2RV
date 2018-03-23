@@ -19,6 +19,7 @@ public:
 	float getrayon();
 	void setrayon(float r);
 
+
 	//fonction pour tracer la Forme
 	virtual void tracer();
 };

@@ -15,11 +15,12 @@ bool IsPerpendicular (Forme f1, Segment f2)
 	bool perpendicular = false;
 
     //calcul du produit scalaire
+	cout<<f1.getextremite().getx()<<", "<<f1.getextremite().gety()<<endl;
     Point vector1 = f1.getextremite()-f1.getorigine();
     Point vector2 = f2.getextremite()-f2.getorigine();
-    int prod_scal = vector1.getx()*vector2.getx() + vector1.gety()*vector2.gety();
+    float prod_scal = (float)(vector1.getx())*(float)(vector2.getx()) + (float)(vector1.gety())*(float)(vector2.gety());
 
-    if (prod_scal < 0.08)
+    if (prod_scal < 0.00000001 && prod_scal > -0.000000001)
     {
 		perpendicular = true;
     }
@@ -131,7 +132,7 @@ float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
 	else { return false; }*/
 	cercle.setcentre(centre);
 	cercle.setrayon(distmoy*2/W);
-	return distot;
+	return distot/(10*nuage.size());
 }
 
 
@@ -212,45 +213,33 @@ Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxp
 		}
 		pointinterm.setx(points[indice].getx());
 		pointinterm.sety(points[indice].gety());
-		cout<<liste[n-1]->getextremite().getx()<<endl;
 		return pointinterm;
 	}
 }
 
-Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	Point pointinterm;
-	vector<Point> points;
-	vector<int> indpoints;
-	int j = 0;
+Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, bool origine, int n, int W, int H){
 	for (int i = 0; i < n-1; i++)
 	{
 		if(liste[i]->gettype()==SEGMENT){
 			if(IsPerpendicular (*liste[i], seg)){
-				j = cherchevec(pointinterm, points);
-				if(j>=0){
-					indpoints[j]++;
-				}else{
-					points.push_back(pointinterm);
-					indpoints.push_back(1);
-				}
-			}
-		}
-	}
-	if(points.size()==0){
-		return Point(1000, 1000, W, H);
-	}else{
-		int indice = 0;
-		int val = 0;
-		for (int i = 0; i < (signed)points.size(); i++)
-		{
-			if(indpoints[i]>val){
-				val = indpoints[i];
-				indice = i;
-			}
-		}
+				cout<<"orthogonalite a i = "<<i<<endl;
+				Point pointinterm;
+				Point vec_dir_seg;
+				Point vec_ortho;
+				vec_dir_seg = (liste[i]->getextremite()-liste[i]->getorigine())/distanceP(liste[i]->getextremite(), liste[i]->getorigine(), W, H);
+				vec_ortho.setx(vec_dir_seg.gety());
+				vec_ortho.sety(-vec_dir_seg.getx());
+				if(origine){
 
+					pointinterm = seg.getextremite() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
+				}else{
+					pointinterm = seg.getorigine() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
+				}
+				return pointinterm;
+			}
+		}
 	}
-	return pointinterm;
+	return Point(1000, 1000, W, H);
 }
 
 Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
@@ -258,6 +247,7 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 	Point extremite = seg->getextremite();
 	bool or = false;
 	bool ex = false;
+	bool orthogonalise = false;
 	Segment newseg;
 	newseg.setorigine(origine);
 	newseg.setextremite(extremite);
@@ -276,20 +266,21 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 	}
 
 	//si pas trouves, recherche de perpendiculaire
-	/*if(!or){
-		origine = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
+	if(!or){
+		origine = ajoutperpendicularite(*seg, liste, true, n, W, H);
 		if(origine.getx()<1){
 			or = true;
+			orthogonalise = true;
 			newseg.setorigine(origine);
 		}
 	}
-	if(!ex){
-		extremite = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
+	if(!ex && !orthogonalise){
+		extremite = ajoutperpendicularite(*seg, liste, false, n, W, H);
 		if(extremite.getx()<1){
 			ex = true;
 			newseg.setextremite(extremite);
 		}
-	}*/
+	}
 	//si pas de points trouves, recherche de paralleles
 
 
@@ -398,7 +389,7 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 			//si les segments opposes sont paralleles
 			if (IsParallel (segmentTable[0], segmentTable[2]) && IsParallel (segmentTable[1], segmentTable[3]))
 			{
-				//et si les deux premiers segments sont perprendiculaires
+				//et si les deux premiers segments sont perpendiculaires
 				if (IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;

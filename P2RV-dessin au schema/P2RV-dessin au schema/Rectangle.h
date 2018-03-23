@@ -19,6 +19,7 @@ public:
 	void setB (Point B);
 	void setC (Point C);
 
+
 	//fonction pour tracer la Forme
 	virtual void tracer();
 };

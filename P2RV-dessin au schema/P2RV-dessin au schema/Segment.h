@@ -19,6 +19,7 @@ public:
 	virtual Point getextremite();
 	virtual void setextremite(Point e);
 
+
 	//fonction pour tracer la Forme
 	virtual void tracer();
 };
@@ -26,3 +27,5 @@ public:
 #ifndef SEGMENT
 #define SEGMENT 1
 #endif
+
+bool operator==(Segment const& seg1, Segment const& seg2);

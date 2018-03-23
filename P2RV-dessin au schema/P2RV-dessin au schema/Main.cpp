@@ -79,7 +79,7 @@ void vMouse(int button, int state, int x, int y)
 			float errcercle = 100;
 
 			if(IsClosed (*TraitaTester, W, distancemaxclosed)){
-				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/500;
+				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/*/500*/;
 			}
 			if(errseg <= errligne && errseg < errcercle){
 				Point p1 = ((*TraitaTester).getTable())[0];
@@ -94,13 +94,13 @@ void vMouse(int button, int state, int x, int y)
 				liste.pop_back();
 				liste.push_back(ligne);
 
-				/*Rectangle* rectangle = new Rectangle();
+				Rectangle* rectangle = new Rectangle();
 				if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
 				{
 					liste.pop_back();
 					liste.push_back(rectangle);
 				}
-				Polygone* polygone = new Polygone();
+				/*Polygone* polygone = new Polygone();
 				if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
 				{
 					liste.pop_back();

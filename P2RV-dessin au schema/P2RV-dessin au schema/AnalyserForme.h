@@ -23,5 +23,5 @@ bool trouverpolygone (LigneBrisee, Polygone&, int, int, int);
 
 int cherchevec(Point, vector<Point>);
 Point ajoutpointconfondu(Point*, vector<Forme*>, int, int, int, int);
-Point ajoutperpendicularite(Segment, vector<Forme*>, int, int, int, int);
+Point ajoutperpendicularite(Segment, vector<Forme*>, bool, int, int, int);
 Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);
