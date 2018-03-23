@@ -402,10 +402,7 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 				if (IsPerpendicular (segmentTable[0], segmentTable[1]))
 				{
 					est_rectangle = true;
-<<<<<<< HEAD
-					rectangle.setRef(segmentTable[0].getorigine());
-					rectangle.setOppose(segmentTable[2].getorigine());
-=======
+
 					//parametrage du point A
 					rectangle.setA(segmentTable[0].getorigine());
 					//parametrage du point B
@@ -423,7 +420,6 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 					C.setx(xc);
 					C.sety(segmentTable[2].getorigine().gety());
 					rectangle.setC(C);
->>>>>>> 9e5ae96bb788dc7f43b7134b63646dde81fd9d97
 				}
 			}
 		}

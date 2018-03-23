@@ -79,7 +79,7 @@ void vMouse(int button, int state, int x, int y)
 			float errcercle = 100;
 
 			if(IsClosed (*TraitaTester, W, distancemaxclosed)){
-				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/400;
+				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/500;
 			}
 			if(errseg <= errligne && errseg < errcercle){
 				Point p1 = ((*TraitaTester).getTable())[0];
@@ -110,14 +110,10 @@ void vMouse(int button, int state, int x, int y)
 				liste.pop_back();
 				liste.push_back(cercle);
 			}
-<<<<<<< HEAD
 					/*else{
 						trouver arc de cercle
 					}*/
-		}				
-=======
 		}
->>>>>>> 9e5ae96bb788dc7f43b7134b63646dde81fd9d97
 		break;
 	default:
 		printf("Erreur??\n");
@@ -166,9 +162,6 @@ int main(int argc, char **argv) {
 	// Declaration des callbacks clavier
    glutKeyboardUpFunc(&clavier);
 
-	/*liste.push_back(new Segment(Point(100, 100, W, H), Point(200, 200, W, H)));
-	liste.push_back(new Cercle(Point(0, 0, W, H), 1.));
-	liste.push_back(new Arc(Point(0, 0, W, H), 0.5, 0., 1.5));*/
 
 	// enter GLUT event processing cycle
 	glutMainLoop();
