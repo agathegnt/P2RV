@@ -13,10 +13,10 @@ bool IsPerpendicular (Forme, Segment);
 bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);
 bool IsClosedLigne (LigneBrisee, int, int);
-bool trouversegment(Trait, int, int, int);
-bool trouvercercle(Trait, Cercle&, int, int, int);
+float trouversegment(Trait, int, int);
+float trouvercercle(Trait, Cercle&, int, int);
 bool trouverlignebrisee(Trait, LigneBrisee&, int, int, int, int);
-void LisseLigneBrisee(LigneBrisee&);
+void LisseLigneBrisee(LigneBrisee&, int, int, int);
 bool trouverrectangle (LigneBrisee, Rectangle&, int, int, int);
 bool trouverpolygone (LigneBrisee, Polygone&, int, int, int);
 
