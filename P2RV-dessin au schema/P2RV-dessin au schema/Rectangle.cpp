@@ -2,37 +2,46 @@
 
 //Constructeur rectangle nul
 Rectangle::Rectangle(){
-	ref = Point();
-	oppose = Point();
+	pointA = Point();
+	pointB = Point();
+	pointC = Point();
 	afficher = true;
 	type = RECTANGLE;
 }
 
 //Constructeur, avec  les points
-Rectangle::Rectangle(Point r, Point o){
-	ref = r;
-	oppose = o;
+Rectangle::Rectangle(Point A, Point B, Point C){
+	pointA = A;
+	pointB = B;
+	pointC = C;
 	afficher = true;
 	type = RECTANGLE;
 }
 
 //Setters
-void Rectangle::setRef (Point r)
+void Rectangle::setA (Point A)
 {
-	ref = r;
+	pointA = A;
 }
-void Rectangle::setOppose (Point o)
+void Rectangle::setB (Point B)
 {
-	oppose = o;
+	pointB = B;
+}
+void Rectangle::setC (Point C)
+{
+	pointC = C;
 }
 
 //fonction pour tracer la Forme
 void Rectangle::tracer(){
+	Point vectAB = Point();
+	vectAB.setx(pointB.getx() - pointA.getx());
+	vectAB.sety(pointB.gety() - pointA.gety());
 	glBegin(GL_POLYGON);
-		glColor3f(1., 0., 0.);
-		glVertex2f(ref.getx(), ref.gety());
-		glVertex2f(oppose.getx(), ref.gety());
-		glVertex2f(oppose.getx(), oppose.gety());
-		glVertex2f(ref.getx(), oppose.gety());
+		glColor3f(0., 0., 1.);
+		glVertex2f(pointA.getx(), pointA.gety());
+		glVertex2f(pointB.getx(), pointB.gety());
+		glVertex2f(pointC.getx(), pointC.gety());
+		glVertex2f(pointC.getx()-vectAB.getx(), pointC.gety()-vectAB.gety());
 	glEnd();
 }
