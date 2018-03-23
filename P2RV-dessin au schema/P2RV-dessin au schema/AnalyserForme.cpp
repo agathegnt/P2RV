@@ -407,16 +407,57 @@ bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, in
 					rectangle.setA(segmentTable[0].getorigine());
 					//parametrage du point B
 					rectangle.setB(segmentTable[1].getorigine());
+					float xb = segmentTable[1].getorigine().getx();
+					float yb = segmentTable[1].getorigine().gety();
+					//parametrage du point C
+					Point C = Point ();
 					//vecteur AB
 					Point vectAB = Point();
-					vectAB.setx(segmentTable[1].getorigine().getx() - segmentTable[0].getorigine().getx());
-					vectAB.sety(segmentTable[1].getorigine().gety() - segmentTable[0].getorigine().gety());
-					//equation droite
-					float gamma = -vectAB.getx()*segmentTable[1].getorigine().getx() -vectAB.gety()*segmentTable[1].getorigine().gety();
-					// calcul du point C
+					vectAB.setx(xb - segmentTable[0].getorigine().getx());
+					vectAB.sety(yb - segmentTable[0].getorigine().gety());
+					//equation droite perpendiculaire a AB passant par B
+					float gamma = -vectAB.getx()*xb -vectAB.gety()*yb;
+					/*ESSAI D'AMELIORATION
+					//longueur du deuxieme cote
+					float dist = distanceP(segmentTable[1].getorigine(), segmentTable[2].getorigine(), W, H);
+					//calcul du point d'intersection de cette droite et du cercle de centre B et de rayon BC
+					float a = 1.0 + (-(float)vectAB.getx()/(float)vectAB.gety())*(-(float)vectAB.getx()/(float)vectAB.gety());
+					float b = 2.0 * ((-(float)vectAB.getx()/(float)vectAB.gety()) * (-gamma/(float)vectAB.gety()-yb)-xb);
+					float c = xb*xb + (-gamma/(float)vectAB.gety()-yb)*(-gamma/(float)vectAB.gety()-yb)-dist*dist;
+					float delta = b * b - 4 * a * b;
+					//on obtient 2 solutions
+					if (delta > 0)
+					{
+						float xc1 = (-b - (float)sqrt(delta)) / (2 * a);
+						float yc1 = a * xc1 + b;
+						float ecart1 = sqrt((xc1*W/2 - segmentTable[2].getorigine().getx()*W/2)*(xc1*W/2 - segmentTable[2].getorigine().getx()*W/2)
+							+ (yc1*H/2 - segmentTable[2].getorigine().gety()*H/2)*(yc1*H/2 - segmentTable[2].getorigine().gety()*H/2));
+						cout<<ecart1<<endl;
+                 
+						float xc2 = (-b + (float)sqrt(delta)) / (2 * a);
+						float yc2 = a * xc2 + b;
+						float ecart2 = sqrt((xc2*W/2 - segmentTable[2].getorigine().getx()*W/2)*(xc2*W/2 - segmentTable[2].getorigine().getx()*W/2)
+							+ (yc2*H/2 - segmentTable[2].getorigine().gety()*H/2)*(yc2*H/2 - segmentTable[2].getorigine().gety()*H/2));
+						cout<<ecart2<<endl;
+						//on choisit la solution la plus proche du point C d'origine
+						if (ecart1 <= ecart2)
+						{
+							C.setx(xc1);
+							C.sety(yc1);
+						}
+						else
+						{
+							C.setx(xc2);
+							C.sety(yc2);
+						}
+					}
+					else
+					{
+						float xc = (-(float)vectAB.gety()*(float)segmentTable[2].getorigine().gety()-gamma)/(float)vectAB.getx();
+						C.setx(xc);
+						C.sety(segmentTable[2].getorigine().gety());
+					}*/
 					float xc = (-(float)vectAB.gety()*(float)segmentTable[2].getorigine().gety()-gamma)/(float)vectAB.getx();
-					cout<<xc;
-					Point C = Point ();
 					C.setx(xc);
 					C.sety(segmentTable[2].getorigine().gety());
 					rectangle.setC(C);
