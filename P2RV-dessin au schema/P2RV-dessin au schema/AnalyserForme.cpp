@@ -81,7 +81,7 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 //=========== ANALYSE SEGMENT ================================
 
 //determine si un trait est presque un segment ou non
-bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
+float trouversegment(Trait trait, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
 	float distot = 0.;
@@ -96,16 +96,17 @@ bool trouversegment(Trait trait, int distancemaxsegment, int W, int H) {
 		AC = distanceP(nuage[k], nuage[0], W, H);
 		distot += sqrt(abs(AC*AC - ((ABcarre+AC*AC-BC*BC) / AB2) * ((ABcarre+AC*AC-BC*BC) / AB2)));//calcule la distance entre le point consid�r� et le segment reliant les extr�mit�s du trait et l'ajoute � distot
 	}
-	if (distancemaxsegment*AB > distot) {//on accepte une erreur plus importante si le trait est plus long, d'ou la multiplication par AB
+	/*if (distancemaxsegment*AB > distot) {//on accepte une erreur plus importante si le trait est plus long, d'ou la multiplication par AB
 		return true;
 	}
-	else { return false; }
+	else { return false; }*/
+	return distot/AB;
 }
 
 //=========== ANALYSE CERCLE ================================
 
 //determine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le parametre cercle
-bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, int H) {
+float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
 	vector<Point> nuage = trait.getTable();
 	int j = nuage.size();
 	float distot = 0.;
@@ -122,12 +123,15 @@ bool trouvercercle(Trait trait, Cercle& cercle, int distancemaxcercle, int W, in
 	for (int k = 0; k < j; k++){//on calcule la somme des �carts � la distance moyenne
 		distot += abs((distanceP(centre, nuage[k], W, H)-distmoy));
 	}
-	if (distancemaxcercle > distot) {//si cet �cart est suffisamment petit, on a bien un cercle
+	/*if (distancemaxcercle > distot) {//si cet �cart est suffisamment petit, on a bien un cercle
 		cercle.setcentre(centre);
 		cercle.setrayon(distmoy*2/W);
 		return true;
 	}
-	else { return false; }
+	else { return false; }*/
+	cercle.setcentre(centre);
+	cercle.setrayon(distmoy*2/W);
+	return distot;
 }
 
 
@@ -272,7 +276,7 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 	}
 
 	//si pas trouves, recherche de perpendiculaire
-	if(!or){
+	/*if(!or){
 		origine = ajoutperpendicularite(*seg, liste, n, distancemaxpoints, W, H);
 		if(origine.getx()<1){
 			or = true;
@@ -285,7 +289,7 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 			ex = true;
 			newseg.setextremite(extremite);
 		}
-	}
+	}*/
 	//si pas de points trouves, recherche de paralleles
 
 
@@ -296,9 +300,11 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 
 //=========== ANALYSE LIGNE BRISEE ================================
 
-bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int distanceminligne, int W, int H) {
+float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int distanceminligne, int distancemaxsegment, int W, int H) {
 	//booleen retourne
-	bool estLigne = false;
+	//bool estLigne = false;
+	float errtot = 0;
+	float errtmp = 0;
 
 	//recuperation du nuage de points
 	vector<Point> nuage = trait.getTable();
@@ -317,57 +323,62 @@ bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int di
 		trait_tmp.ajout(nuage[cpt]);
 
 		//si avec ce point supplementaire on perd le segment
-		if (!trouversegment(trait_tmp, distancemax, W, H))
+		errtmp = trouversegment(trait_tmp, W, H);
+		if (errtmp>distancemaxsegment)
 		{
-				//on cree un segment avec les points precedents
-				Segment segment_tmp = Segment(nuage[debut], nuage[cpt-1]);
-				//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
-				if (distanceP(nuage[debut],nuage[cpt-1],W,H)  > distanceminligne)
-				{
-					ligne.ajoutSegment(segment_tmp);
-					estLigne = true;
-				}
-				//reinitialisation des donnees temporaires
-				debut = cpt;
-				trait_tmp = Trait();
-				trait_tmp.ajout(nuage[debut]);
+			
+			//on cree un segment avec les points precedents
+			Segment segment_tmp = Segment(nuage[debut], nuage[cpt-1]);
+			//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
+			if (distanceP(nuage[debut],nuage[cpt-1],W,H) > distanceminligne)
+			{
+				errtot += errtmp;
+				ligne.ajoutSegment(segment_tmp);
+				//estLigne = true;
+			}
+			//reinitialisation des donnees temporaires
+			debut = cpt;
+			trait_tmp = Trait();
+			trait_tmp.ajout(nuage[debut]);
 		}
 		else if (cpt == (taille-1))
 		{
 			//on cree un segment avec les derniers points
 			Segment segment_tmp = Segment(nuage[debut], nuage[cpt]);
-				//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
-				if (distanceP(nuage[debut],nuage[cpt],W,H)  > distanceminligne)
-				{
-					ligne.ajoutSegment(segment_tmp);
-					estLigne = true;
-				}
+			//ajout de ce segment a la ligne BRISEE ssi il est suffisemment long
+			if (distanceP(nuage[debut],nuage[cpt],W,H) > distanceminligne)
+			{
+				ligne.ajoutSegment(segment_tmp);
+				//estLigne = true;
+			}
 		}
 		//incrementation du compteur
 		cpt += 1;
 	}
-	return estLigne;
+	//return estLigne;
+	return errtot;
 }
 
-LigneBrisee* LisseLigneBrisee(LigneBrisee ligne){
-	LigneBrisee *newligne = new LigneBrisee();
+void LisseLigneBrisee(LigneBrisee& ligne, int distancemaxclosed, int W, int H){
 	int taille = (ligne.getTable()).size();
-	newligne->ajoutSegment(Segment());
-	(newligne->getTable()[0]).setorigine((ligne.getTable()[0]).getorigine());
+	Point p = Point();
+	Point p1 = Point();
+	Point p2 = Point();
 	for (int i = 0; i < taille-1; i++)
 	{
-		newligne->ajoutSegment(Segment());
-		Point *p = new Point();
-		Point *p1 = new Point();
-		Point *p2 = new Point();
-		*p1=ligne.getTable()[i].getextremite();
-		*p2=ligne.getTable()[i+1].getorigine();
-		*p=(*p1+*p2)/2;
-		newligne->getTable()[i].setextremite(*p);
-		newligne->getTable()[i+1].setorogine(*p);
+		p1=ligne.getTable()[i].getextremite();
+		p2=ligne.getTable()[i+1].getorigine();
+		p=(p1+p2)/2;
+		ligne.setpoint(false, i, p);
+		ligne.setpoint(true, i+1, p);
 	}
-	(newligne->getTable()[taille-1]).setextremite((ligne.getTable()[taille-1]).getextremite());
-	return newligne;
+	p1=ligne.getTable()[taille-1].getextremite();
+	p2=ligne.getTable()[0].getorigine();
+	if(distanceP(p1, p2, W, H)<distancemaxclosed){
+		p=(p1+p2)/2;
+		ligne.setpoint(false, taille-1, p);
+		ligne.setpoint(true, 0, p);
+	}
 }
 
 //=========== ANALYSE RECTANGLE ================================

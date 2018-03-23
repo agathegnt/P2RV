@@ -12,14 +12,16 @@ float distanceP(Point, Point, int, int);
 bool IsPerpendicular (Forme, Segment);
 bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);
-bool trouversegment(Trait, int, int, int);
-bool trouvercercle(Trait, Cercle&, int, int, int);
-bool trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distancemax, int distanceminligne, int W, int H);
-LigneBrisee* LisseLigneBrisee(LigneBrisee);
-bool trouverrectangle (LigneBrisee ligne, Rectangle& rectangle, int W, int H, int distancemaxclosed);
-bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int ecartmax);
+bool IsClosedLigne (LigneBrisee, int, int);
+float trouversegment(Trait, int, int);
+float trouvercercle(Trait, Cercle&, int, int);
+bool trouverlignebrisee(Trait, LigneBrisee&, int, int, int, int);
+void LisseLigneBrisee(LigneBrisee&, int, int, int);
+bool trouverrectangle (LigneBrisee, Rectangle&, int, int, int);
+bool trouverpolygone (LigneBrisee, Polygone&, int, int, int);
 
 
 int cherchevec(Point, vector<Point>);
 Point ajoutpointconfondu(Point*, vector<Forme*>, int, int, int, int);
+Point ajoutperpendicularite(Segment, vector<Forme*>, int, int, int, int);
 Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);

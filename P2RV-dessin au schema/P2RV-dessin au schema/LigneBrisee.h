@@ -16,6 +16,9 @@ public:
 	//Getters
 	vector<Segment> getTable ();
 
+	//Setters
+	void setpoint(bool ori, int indice, Point p);
+
 	//ajoute un segment au vecteur de segments
 	virtual void ajoutSegment(Segment s);
 
