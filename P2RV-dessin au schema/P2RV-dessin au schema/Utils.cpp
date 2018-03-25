@@ -1,12 +1,12 @@
 #include "Utils.h"
 
-//Constructeur par défaut
+//Constructeur par defaut
 Point::Point(){
 	x = 0;
 	y = 0;
 }
 
-//Constructeur avec des valeurs de x et y ; les arguments X et Y sont en pixels, x et y sont en fraction de fenêtre
+//Constructeur avec des valeurs de x et y ; les arguments X et Y sont en pixels, x et y sont en fraction de fenetre
 Point::Point(int X, int Y, int W, int H){
 	x = (float)X/W*2-1;
 	y = -(float)Y/H*2+1;

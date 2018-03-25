@@ -1,13 +1,15 @@
 #include "AnalyserForme.h"
 
-vector<Forme*> liste;//toutes les formes pr�sentes
-int n = 0;//le nombre de formes pr�sentes
-
+//toutes les formes presentes
+vector<Forme*> liste;
+//le nombre de formes presentes
+int n = 0;
 
 //taille fenetre
 int W;
 int H;
 
+// ecarts mini et maxi
 int distancemaxclosed = 20;
 int distancemaxclosedligne = 40;
 int distancemaxcercle = 1000;
@@ -17,6 +19,7 @@ int distanceminligne = 1;
 
 bool tracer = false;
 Trait* TraitaTester;
+
 // Fonction de redimensionnement de la fenetre
 void redimensionner(int w, int h) {
 
@@ -32,9 +35,9 @@ void redimensionner(int w, int h) {
    glViewport(0, 0, w, h);
    // on charge la matrice identite
    glLoadIdentity();
-
 }
 
+//fonction affichage
 void affichageScene() {
    //On efface les tampons de couleur
    glClear(GL_COLOR_BUFFER_BIT);
@@ -51,6 +54,7 @@ void affichageScene() {
 
 }
 
+// fonction pour contruire un trait en fonction de deplacement souris
 void deplsouris(int x, int y) {
 	if(tracer){
 		liste[n-1]->ajout(Point(x, y, W, H));
@@ -62,79 +66,102 @@ void vMouse(int button, int state, int x, int y)
 	switch (button)
 	{
 	case GLUT_RIGHT_BUTTON:
-		if (state == GLUT_DOWN) {
+    // si le bonton droit est enfonce, trace d'un nouveau trait
+		if (state == GLUT_DOWN)
+    {
 			Trait* TraitenCours = new Trait();
 			TraitaTester = TraitenCours;
 			liste.push_back(TraitenCours);
 			n++;
 			tracer = true;
-		} else {
-			tracer = false;
-			Segment* seg = new Segment();
-			LigneBrisee* ligne = new LigneBrisee ();
-			Cercle* cercle = new Cercle();
+		} else
+      {
+  			tracer = false;
+        // initialisation des formes possibles
+  			Segment* seg = new Segment();
+  			LigneBrisee* ligne = new LigneBrisee ();
+  			Cercle* cercle = new Cercle();
 
-			float errseg = trouversegment(*TraitaTester, W, H);
-			float errligne = trouverlignebrisee(*TraitaTester, *ligne, distanceminligne, distancemaxsegment, W, H);
-			float errcercle = 100;
+        // calcul des formes possibles et de l'erreur au trait d'origine
+  			float errseg = trouversegment(*TraitaTester, W, H);
+  			float errligne = trouverlignebrisee(*TraitaTester, *ligne, distanceminligne, distancemaxsegment, W, H);
+  			float errcercle = 100;
 
-			if(IsClosed (*TraitaTester, W, distancemaxclosed)){
-				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/*/500*/;
-			}
-			if(errseg <= errligne && errseg < errcercle){
-				Point p1 = ((*TraitaTester).getTable())[0];
-				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
-				seg->setorigine(p1);
-				seg->setextremite(p2);
-				*seg = AnalyseSegment(seg, liste, n, distancepoint, W, H);
-				liste.pop_back();
-				liste.push_back(seg);
-			}else if(errligne<errcercle){
-				LisseLigneBrisee(*ligne, distancemaxclosed, W, H);
-				liste.pop_back();
-				liste.push_back(ligne);
+        // mise a jour de l'erreur cercle
+  			if(IsClosed (*TraitaTester, W, distancemaxclosed))
+        {
+  				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/*/500*/;
+  			}
 
-				Rectangle* rectangle = new Rectangle();
-				if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
-				{
-					liste.pop_back();
-					liste.push_back(rectangle);
-				}
-				/*Polygone* polygone = new Polygone();
-				if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
-				{
-					liste.pop_back();
-					liste.push_back(polygone);
-				}*/
-			}else{
-				liste.pop_back();
-				liste.push_back(cercle);
-			}
-					/*else{
-						trouver arc de cercle
-					}*/
+        // si l'erreur segment est la plus faible
+  			if(errseg <= errligne && errseg < errcercle)
+        {
+          //recuperation des donnees du trait
+  				Point p1 = ((*TraitaTester).getTable())[0];
+  				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
+          //parametrage du segment
+  				seg->setorigine(p1);
+  				seg->setextremite(p2);
+          //mise a jour en fonctione de l'environnement des formes existantes
+  				*seg = AnalyseSegment(seg, liste, n, distancepoint, W, H);
+          //ajout du segment a la liste de formes
+  				liste.pop_back();
+  				liste.push_back(seg);
+        // si l'erreur ligne est la plus faible
+  			} else if(errligne<errcercle)
+        {
+          //ajout de la ligne a la liste de formes
+  				LisseLigneBrisee(*ligne, distancemaxclosed, W, H);
+  				liste.pop_back();
+  				liste.push_back(ligne);
+
+          // analyse plus detaillee de la ligne brisee
+  				Rectangle* rectangle = new Rectangle();
+  				if (trouverrectangle(*ligne, *rectangle, W, H, distancemaxclosedligne))
+  				{
+  					liste.pop_back();
+  					liste.push_back(rectangle);
+  				}
+  				/*Polygone* polygone = new Polygone();
+  				if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
+  				{
+  					liste.pop_back();
+  					liste.push_back(polygone);
+  				}*/
+        // sinon si l'erreur la plus faible est celle du cercle
+  			}else
+        {
+          //ajout du cercle a la liste de formes
+  				liste.pop_back();
+  				liste.push_back(cercle);
+  			}
+  					/*else{
+  						trouver arc de cercle
+  					}*/
 		}
 		break;
-	default:
+	  default:
 		printf("Erreur??\n");
 		break;
 	}
 }
 
+// fonction parametrage des touches clavier
 void clavier(unsigned char key, int xx, int yy) {
 	// Quelle touche a ete appuyee ?
 	switch(key) {
-	case 's' :
-	case 'S' :
-		if(n>0){
-			liste.pop_back();
-			n--;
-		}
-	break;
-	// ESCAPE on termine l'application
-	case 27 :
-		exit(0);
-    break;
+    //"s" supprime la derniere forme
+  	case 's' :
+  	case 'S' :
+  		if(n>0){
+  			liste.pop_back();
+  			n--;
+  		}
+  	break;
+  	// ESCAPE on termine l'application
+  	case 27 :
+  		exit(0);
+      break;
    }
 }
 
@@ -148,7 +175,6 @@ int main(int argc, char **argv) {
 	W=600;
 	H=600;
 
-
 	// enregistrement des callbacks d'affichage
 	// de redimensionnement et d'idle
 	glutDisplayFunc(affichageScene);
@@ -161,7 +187,6 @@ int main(int argc, char **argv) {
 
 	// Declaration des callbacks clavier
    glutKeyboardUpFunc(&clavier);
-
 
 	// enter GLUT event processing cycle
 	glutMainLoop();

@@ -13,10 +13,11 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-
+// classe point defini par deux coordonnees
 class Point
 {
 private:
+	// coordonnees stockees en fraction de fenetre
 	float x;
 	float y;
 
