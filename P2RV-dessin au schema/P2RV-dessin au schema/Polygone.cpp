@@ -1,6 +1,6 @@
 #include "Polygone.h"
 
-//Constructeur polygone nul
+//Constructeur par défaut : polygone nul
 Polygone::Polygone(){
 	premier = Point();
 	direction = Point();

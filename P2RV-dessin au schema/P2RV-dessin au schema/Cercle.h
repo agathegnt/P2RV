@@ -9,7 +9,7 @@ private:
 	float rayon;
 
 public:
-	//Constructeur
+	//Constructeurs
 	Cercle();
 	Cercle(Point p, float r);
 
@@ -18,7 +18,6 @@ public:
 	void setcentre(Point o);
 	float getrayon();
 	void setrayon(float r);
-
 
 	//fonction pour tracer la Forme
 	virtual void tracer();

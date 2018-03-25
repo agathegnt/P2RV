@@ -14,7 +14,6 @@ public:
 	//Constructeur
 	Polygone();
 
-
 	//Setters
 	void setPremier (Point p);
 	void setDirection (Point d);

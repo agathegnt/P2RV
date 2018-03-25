@@ -2,6 +2,7 @@
 
 #include "Forme.h"
 
+// rectangle defini par ses trois premiers sommets
 class Rectangle : public Forme
 {
 private:
@@ -18,7 +19,6 @@ public:
 	void setA (Point A);
 	void setB (Point B);
 	void setC (Point C);
-
 
 	//fonction pour tracer la Forme
 	virtual void tracer();

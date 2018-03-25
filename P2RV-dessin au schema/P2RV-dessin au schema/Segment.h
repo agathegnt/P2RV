@@ -2,6 +2,7 @@
 
 #include "Forme.h"
 
+// segment defini par ses deux extremites
 class Segment : public Forme
 {
 private:
@@ -19,7 +20,6 @@ public:
 	virtual Point getextremite();
 	virtual void setextremite(Point e);
 
-
 	//fonction pour tracer la Forme
 	virtual void tracer();
 };
@@ -28,4 +28,5 @@ public:
 #define SEGMENT 1
 #endif
 
+// surcharge de l'operateur ==
 bool operator==(Segment const& seg1, Segment const& seg2);

@@ -1,6 +1,6 @@
 #include "Cercle.h"
 
-//Constructeur par défaut
+//Constructeur par defaut, cercle de rayon 0
 Cercle::Cercle(){
 	centre = Point();
 	rayon = 0;

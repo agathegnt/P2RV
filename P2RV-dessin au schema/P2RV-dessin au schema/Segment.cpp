@@ -1,6 +1,6 @@
 #include "Segment.h"
 
-//Constructeur par défaut
+//Constructeur par defaut : segment de longueur nulle
 Segment::Segment(){
 	origine = Point();
 	extremite = Point();
@@ -39,6 +39,7 @@ void Segment::tracer(){
 	glEnd();
 }
 
+// surcharge
 bool operator==(Segment const& seg1, Segment const& seg2){
 	// on copie les points pour ne pas les modifier
 	Segment copie1 = seg1;

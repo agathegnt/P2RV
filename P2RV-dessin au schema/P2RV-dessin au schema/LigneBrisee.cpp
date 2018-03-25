@@ -2,7 +2,7 @@
 
 #include "LigneBrisee.h"
 
-//Constructeur
+//Constructeur par défaut : une ligne vide
 LigneBrisee::LigneBrisee(){
 	table = vector<Segment>(0);
 	afficher = true;

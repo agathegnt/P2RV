@@ -7,6 +7,7 @@ class Arc : public Forme
 private:
 	Point centre;
 	float rayon;
+	//valeurs d'angle en radians
 	float angle1;
 	float angle2;
 
