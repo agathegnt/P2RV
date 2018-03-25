@@ -80,6 +80,17 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 	return closed;
 }
 
+//retourne l'indice coorespondant si le point existe dans le vector, -1 si non
+int cherchevec(Point p, vector<Point> points){
+	for (int i = 0; i < (signed)points.size(); i++)
+	{
+		if(p==points[i]){
+			return i;
+		}
+	}
+	return -1;
+}
+
 //=========== ANALYSE SEGMENT ================================
 
 //determine si un trait est presque un segment ou non
@@ -106,136 +117,6 @@ float trouversegment(Trait trait, int W, int H) {
 	}
 	else { return false; }*/
 	return distot/AB;
-}
-
-//=========== ANALYSE CERCLE ================================
-
-//determine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le parametre cercle
-float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
-	vector<Point> nuage = trait.getTable();
-	int j = nuage.size();
-	float distot = 0.;
-	float distmoy = 0.;
-	Point centre=Point();
-	//on trouve le barycentre des points du trait ; il servira de centre
-	for (int k = 0; k < j; k++){
-		centre.setx((nuage[k].getx() + k * centre.getx()) / (k + 1));
-		centre.sety((nuage[k].gety() + k * centre.gety()) / (k + 1));
-	}
-	//on calcule la distance moyenne entre le barycentre et les points du trait
-	for (int k = 0; k < j; k++){
-		distmoy += distanceP(centre, nuage[k], W, H);
-	}
-	distmoy = distmoy/j;
-	//on calcule la somme des ecarts a la distance moyenne
-	for (int k = 0; k < j; k++){
-		distot += abs((distanceP(centre, nuage[k], W, H)-distmoy));
-	}
-	/*//si cet ecart est suffisamment petit, on a bien un cercle
-	if (distancemaxcercle > distot) {
-		cercle.setcentre(centre);
-		cercle.setrayon(distmoy*2/W);
-		return true;
-	}
-	else { return false; }*/
-	cercle.setcentre(centre);
-	cercle.setrayon(distmoy*2/W);
-	//on renvoie un float donnant l'ecart du cercle au trait initial
-	return distot/(10*nuage.size());
-}
-
-
-//retourne l'indice coorespondant si le point existe dans le vector, -1 si non
-int cherchevec(Point p, vector<Point> points){
-	for (int i = 0; i < (signed)points.size(); i++)
-	{
-		if(p==points[i]){
-			return i;
-		}
-	}
-	return -1;
-}
-
-//cherche pres de quels points importants de la liste de formes se trouve p, et retourne le point le plus interessant (si il existe)
-Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	vector<Point> points;
-	vector<int> indpoints;
-	int j = 0;
-	Point pointinterm;
-	//parcours de la liste de formes
-	for (int i = 0; i < n-1; i++)
-	{
-		switch ((liste[i]->gettype()))
-		{
-		case SEGMENT:
-			pointinterm = liste[i]->getextremite();
-			// si l'extremite est proche du point P
-			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				j = cherchevec(pointinterm, points);
-				// si ce point appartient deja a la liste, on incremente son compteur
-				if(j>=0){
-					indpoints[j]++;
-				// sinon ajout de ce point a la liste de point
-				}else{
-					points.push_back(pointinterm);
-					indpoints.push_back(1);
-				}
-			}
-			// si l'origine est proche du point P
-			pointinterm = liste[i]->getorigine();
-			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				j = cherchevec(pointinterm, points);
-				// si ce point appartient deja a la liste, on incremente son compteur
-				if(j>=0){
-					indpoints[j]++;
-				// sinon ajout de ce point a la liste de point
-				}else{
-					points.push_back(pointinterm);
-					indpoints.push_back(1);
-				}
-			}
-		break;
-		case CERCLE:
-		case ARC:
-			// si le centre est proche du point P
-			pointinterm = liste[i]->getcentre();
-			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
-				j = cherchevec(pointinterm, points);
-				// si ce point appartient deja a la liste, on incremente son compteur
-				if(j>=0){
-					indpoints[j]++;
-				// sinon ajout de ce point a la liste de point
-				}else{
-					points.push_back(pointinterm);
-					indpoints.push_back(1);
-				}
-			}
-		break;
-		case TRAIT:
-		break;
-		default :
-
-		break;
-		}
-	}
-	// si il n'y a aucun point remarquable proche de P
-	if(points.size()==0){
-		return Point(1000, 1000, W, H);
-	// sinon on choisit le point dont le compteur est le plus haut
-	}else{
-		int indice = 0;
-		int val = 0;
-		for (int i = 0; i < (signed)points.size(); i++)
-		{
-			if(indpoints[i]>val){
-				val = indpoints[i];
-				indice = i;
-			}
-		}
-		pointinterm.setx(points[indice].getx());
-		pointinterm.sety(points[indice].gety());
-		return pointinterm;
-	}
 }
 
 //recherche les perpendicularites entre un segment et les autres segments de la liste
@@ -307,12 +188,45 @@ Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancema
 		}
 	}
 	//si pas de points trouves, recherche de paralleles
-
-
-
+	//TO DO
 	return newseg;
 }
 
+//=========== ANALYSE CERCLE ================================
+
+//determine si un trait est presque un cercle ou non, et, si oui, met ce cercle dans le parametre cercle
+float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
+	vector<Point> nuage = trait.getTable();
+	int j = nuage.size();
+	float distot = 0.;
+	float distmoy = 0.;
+	Point centre=Point();
+	//on trouve le barycentre des points du trait ; il servira de centre
+	for (int k = 0; k < j; k++){
+		centre.setx((nuage[k].getx() + k * centre.getx()) / (k + 1));
+		centre.sety((nuage[k].gety() + k * centre.gety()) / (k + 1));
+	}
+	//on calcule la distance moyenne entre le barycentre et les points du trait
+	for (int k = 0; k < j; k++){
+		distmoy += distanceP(centre, nuage[k], W, H);
+	}
+	distmoy = distmoy/j;
+	//on calcule la somme des ecarts a la distance moyenne
+	for (int k = 0; k < j; k++){
+		distot += abs((distanceP(centre, nuage[k], W, H)-distmoy));
+	}
+	/*//si cet ecart est suffisamment petit, on a bien un cercle
+	if (distancemaxcercle > distot) {
+		cercle.setcentre(centre);
+		cercle.setrayon(distmoy*2/W);
+		return true;
+	}
+	else { return false; }*/
+	cercle.setcentre(centre);
+	cercle.setrayon(distmoy*2/W);
+	//on renvoie un float donnant l'ecart du cercle au trait initial
+	return distot/(10*nuage.size());
+}
 
 //=========== ANALYSE LIGNE BRISEE ================================
 
@@ -529,4 +443,88 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 		polygone.setSommets(table.size());
 	}
 	return est_polygone;
+}
+
+//=========== RECHERCHES DE LIENS ENTRE LES FORMES ================================
+
+//cherche pres de quels points importants de la liste de formes se trouve p, et retourne le point le plus interessant (si il existe)
+Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
+	vector<Point> points;
+	vector<int> indpoints;
+	int j = 0;
+	Point pointinterm;
+	//parcours de la liste de formes
+	for (int i = 0; i < n-1; i++)
+	{
+		switch ((liste[i]->gettype()))
+		{
+		case SEGMENT:
+			pointinterm = liste[i]->getextremite();
+			// si l'extremite est proche du point P
+			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
+				j = cherchevec(pointinterm, points);
+				// si ce point appartient deja a la liste, on incremente son compteur
+				if(j>=0){
+					indpoints[j]++;
+				// sinon ajout de ce point a la liste de point
+				}else{
+					points.push_back(pointinterm);
+					indpoints.push_back(1);
+				}
+			}
+			// si l'origine est proche du point P
+			pointinterm = liste[i]->getorigine();
+			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
+				j = cherchevec(pointinterm, points);
+				// si ce point appartient deja a la liste, on incremente son compteur
+				if(j>=0){
+					indpoints[j]++;
+				// sinon ajout de ce point a la liste de point
+				}else{
+					points.push_back(pointinterm);
+					indpoints.push_back(1);
+				}
+			}
+		break;
+		case CERCLE:
+		case ARC:
+			// si le centre est proche du point P
+			pointinterm = liste[i]->getcentre();
+			if(distanceP(*p, pointinterm, W, H)<distancemaxpoints){
+				j = cherchevec(pointinterm, points);
+				// si ce point appartient deja a la liste, on incremente son compteur
+				if(j>=0){
+					indpoints[j]++;
+				// sinon ajout de ce point a la liste de point
+				}else{
+					points.push_back(pointinterm);
+					indpoints.push_back(1);
+				}
+			}
+		break;
+		case TRAIT:
+		break;
+		default :
+
+		break;
+		}
+	}
+	// si il n'y a aucun point remarquable proche de P
+	if(points.size()==0){
+		return Point(1000, 1000, W, H);
+	// sinon on choisit le point dont le compteur est le plus haut
+	}else{
+		int indice = 0;
+		int val = 0;
+		for (int i = 0; i < (signed)points.size(); i++)
+		{
+			if(indpoints[i]>val){
+				val = indpoints[i];
+				indice = i;
+			}
+		}
+		pointinterm.setx(points[indice].getx());
+		pointinterm.sety(points[indice].gety());
+		return pointinterm;
+	}
 }
