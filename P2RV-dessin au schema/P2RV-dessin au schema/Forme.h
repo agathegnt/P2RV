@@ -7,7 +7,6 @@ class Forme
 protected:
 	// le type est un entier correspondant a une geometrie particuliere
 	int type;
-	bool afficher;
 public:
 	//Constructeur
 	Forme(){}

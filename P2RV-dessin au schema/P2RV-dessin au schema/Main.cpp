@@ -69,9 +69,8 @@ void vMouse(int button, int state, int x, int y)
     // si le bonton droit est enfonce, trace d'un nouveau trait
 		if (state == GLUT_DOWN)
     {
-			Trait* TraitenCours = new Trait();
-			TraitaTester = TraitenCours;
-			liste.push_back(TraitenCours);
+			TraitaTester = new Trait();
+			liste.push_back(TraitaTester);
 			n++;
 			tracer = true;
 		} else
@@ -87,7 +86,7 @@ void vMouse(int button, int state, int x, int y)
   			float errligne = trouverlignebrisee(*TraitaTester, *ligne, distanceminligne, distancemaxsegment, W, H);
   			float errcercle = 100;
 
-        // mise a jour de l'erreur cercle
+        // mise a jour de l'erreur cercle si la forme est fermée (sinon, ça ne peut pas etre un cercle)
   			if(IsClosed (*TraitaTester, W, distancemaxclosed))
         {
   				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/*/500*/;
@@ -95,22 +94,22 @@ void vMouse(int button, int state, int x, int y)
 
         // si l'erreur segment est la plus faible
   			if(errseg <= errligne && errseg < errcercle)
-        {
+			{
           //recuperation des donnees du trait
   				Point p1 = ((*TraitaTester).getTable())[0];
   				Point p2 = ((*TraitaTester).getTable())[(((*TraitaTester).getTable()).size())-1];
           //parametrage du segment
   				seg->setorigine(p1);
   				seg->setextremite(p2);
-          //mise a jour en fonctione de l'environnement des formes existantes
+          //mise a jour du segment en fonction de l'environnement des formes existantes
   				*seg = AnalyseSegment(seg, liste, n, distancepoint, W, H);
           //ajout du segment a la liste de formes
   				liste.pop_back();
   				liste.push_back(seg);
         // si l'erreur ligne est la plus faible
   			} else if(errligne<errcercle)
-        {
-          //ajout de la ligne a la liste de formes
+			{
+          //lissage et ajout de la ligne a la liste de formes
   				LisseLigneBrisee(*ligne, distancemaxclosed, W, H);
   				liste.pop_back();
   				liste.push_back(ligne);

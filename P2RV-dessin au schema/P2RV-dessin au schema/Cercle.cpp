@@ -4,7 +4,6 @@
 Cercle::Cercle(){
 	centre = Point();
 	rayon = 0;
-	afficher = true;
 	type = CERCLE;
 }
 
@@ -12,7 +11,6 @@ Cercle::Cercle(){
 Cercle::Cercle(Point p, float r){
 	centre = p;
 	rayon = r;
-	afficher = true;
 	type = CERCLE;
 }
 

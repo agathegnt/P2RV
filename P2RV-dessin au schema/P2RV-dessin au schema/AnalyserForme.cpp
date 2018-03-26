@@ -20,7 +20,7 @@ bool IsPerpendicular (Forme f1, Segment f2)
     Point vector2 = f2.getextremite()-f2.getorigine();
     float prod_scal = (float)(vector1.getx())*(float)(vector2.getx()) + (float)(vector1.gety())*(float)(vector2.gety());
 
-    if (prod_scal < 0.00000001 && prod_scal > -0.000000001)
+    if (prod_scal < 0.01 && prod_scal > -0.01)
     {
 		perpendicular = true;
     }
@@ -80,17 +80,6 @@ bool IsClosedLigne (LigneBrisee ligne, int W, int distancemaxclosed)
 	return closed;
 }
 
-//retourne l'indice coorespondant si le point existe dans le vector, -1 si non
-int cherchevec(Point p, vector<Point> points){
-	for (int i = 0; i < (signed)points.size(); i++)
-	{
-		if(p==points[i]){
-			return i;
-		}
-	}
-	return -1;
-}
-
 //=========== ANALYSE SEGMENT ================================
 
 //determine si un trait est presque un segment ou non
@@ -111,85 +100,8 @@ float trouversegment(Trait trait, int W, int H) {
 		//calcule la distance entre le point consid�r� et le segment reliant les extr�mit�s du trait et l'ajoute a distot
 		distot += sqrt(abs(AC*AC - ((ABcarre+AC*AC-BC*BC) / AB2) * ((ABcarre+AC*AC-BC*BC) / AB2)));
 	}
-	/* //on accepte une erreur plus importante si le trait est plus long, d'ou la multiplication par AB
-	if (distancemaxsegment*AB > distot) {
-		return true;
-	}
-	else { return false; }*/
+	//on accepte une erreur plus importante si le segment est plus long, d'où la division  par AB
 	return distot/AB;
-}
-
-//recherche les perpendicularites entre un segment et les autres segments de la liste
-Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, bool origine, int n, int W, int H){
-	//parcours des segments de la liste
-	for (int i = 0; i < n-1; i++)
-	{
-		if(liste[i]->gettype()==SEGMENT){
-			// si les deux segments sont presque perpendiculaires
-			if(IsPerpendicular (*liste[i], seg)){
-				cout<<"orthogonalite a i = "<<i<<endl;
-				Point pointinterm;
-				Point vec_dir_seg;
-				Point vec_ortho;
-				vec_dir_seg = (liste[i]->getextremite()-liste[i]->getorigine())/distanceP(liste[i]->getextremite(), liste[i]->getorigine(), W, H);
-				vec_ortho.setx(vec_dir_seg.gety());
-				vec_ortho.sety(-vec_dir_seg.getx());
-				if(origine){
-
-					pointinterm = seg.getextremite() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
-				}else{
-					pointinterm = seg.getorigine() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
-				}
-				return pointinterm;
-			}
-		}
-	}
-	// si il n'y a pas d'autres segments ou si ils ne sont pas perpendiculaires
-	return Point(1000, 1000, W, H);
-}
-
-Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
-	Point origine = seg->getorigine();
-	Point extremite = seg->getextremite();
-	bool or = false;
-	bool ex = false;
-	bool orthogonalise = false;
-	Segment newseg;
-	newseg.setorigine(origine);
-	newseg.setextremite(extremite);
-	//recherche de points
-
-	origine = ajoutpointconfondu(&(seg->getorigine()), liste, n, distancemaxpoints, W, H);
-	if(origine.getx()<1){
-		or = true;
-		newseg.setorigine(origine);
-	}
-
-	extremite = ajoutpointconfondu(&(seg->getextremite()), liste, n, distancemaxpoints, W, H);
-	if(extremite.getx()<1){
-		ex = true;
-		newseg.setextremite(extremite);
-	}
-
-	//si pas trouves, recherche de perpendiculaire
-	if(!or){
-		origine = ajoutperpendicularite(*seg, liste, true, n, W, H);
-		if(origine.getx()<1){
-			or = true;
-			orthogonalise = true;
-			newseg.setorigine(origine);
-		}
-	}
-	if(!ex && !orthogonalise){
-		extremite = ajoutperpendicularite(*seg, liste, false, n, W, H);
-		if(extremite.getx()<1){
-			ex = true;
-			newseg.setextremite(extremite);
-		}
-	}
-	//si pas de points trouves, recherche de paralleles
-	//TO DO
-	return newseg;
 }
 
 //=========== ANALYSE CERCLE ================================
@@ -215,13 +127,6 @@ float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
 	for (int k = 0; k < j; k++){
 		distot += abs((distanceP(centre, nuage[k], W, H)-distmoy));
 	}
-	/*//si cet ecart est suffisamment petit, on a bien un cercle
-	if (distancemaxcercle > distot) {
-		cercle.setcentre(centre);
-		cercle.setrayon(distmoy*2/W);
-		return true;
-	}
-	else { return false; }*/
 	cercle.setcentre(centre);
 	cercle.setrayon(distmoy*2/W);
 	//on renvoie un float donnant l'ecart du cercle au trait initial
@@ -232,8 +137,6 @@ float trouvercercle(Trait trait, Cercle& cercle, int W, int H) {
 
 //determine si un trait est une ligne brisee ou non, et, si oui, met cette ligne dans le parametre ligne
 float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distanceminligne, int distancemaxsegment, int W, int H) {
-	//booleen retourne
-	//bool estLigne = false;
 	float errtot = 0;
 	float errtmp = 0;
 
@@ -265,7 +168,6 @@ float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distanceminligne, 
 			{
 				errtot += errtmp;
 				ligne.ajoutSegment(segment_tmp);
-				//estLigne = true;
 			}
 			//reinitialisation des donnees temporaires
 			debut = cpt;
@@ -281,13 +183,11 @@ float trouverlignebrisee(Trait trait, LigneBrisee& ligne, int distanceminligne, 
 			if (distanceP(nuage[debut],nuage[cpt],W,H) > distanceminligne)
 			{
 				ligne.ajoutSegment(segment_tmp);
-				//estLigne = true;
 			}
 		}
 		//incrementation du compteur
 		cpt += 1;
 	}
-	//return estLigne;
 	return errtot/(ligne.getTable().size());
 }
 
@@ -311,7 +211,8 @@ void LisseLigneBrisee(LigneBrisee& ligne, int distancemaxclosed, int W, int H){
 	// si la ligne brisee est fermee, on relie le debut et la fin
 	p1=ligne.getTable()[taille-1].getextremite();
 	p2=ligne.getTable()[0].getorigine();
-	if(distanceP(p1, p2, W, H)<distancemaxclosed){
+	if(distanceP(p1, p2, W, H)<distancemaxclosed)
+	{
 		//calcul du point moyen
 		p=(p1+p2)/2;
 		//mise a jour de l'extremite et l'origine avec ce point moyen
@@ -447,6 +348,17 @@ bool trouverpolygone (LigneBrisee ligne, Polygone& polygone, int W, int H, int e
 
 //=========== RECHERCHES DE LIENS ENTRE LES FORMES ================================
 
+//retourne l'indice coorespondant si le point existe dans le vector, -1 si non
+int cherchevec(Point p, vector<Point> points){
+	for (int i = 0; i < (signed)points.size(); i++)
+	{
+		if(p==points[i]){
+			return i;
+		}
+	}
+	return -1;
+}
+
 //cherche pres de quels points importants de la liste de formes se trouve p, et retourne le point le plus interessant (si il existe)
 Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
 	vector<Point> points;
@@ -527,4 +439,77 @@ Point ajoutpointconfondu(Point* p, vector<Forme*> liste, int n, int distancemaxp
 		pointinterm.sety(points[indice].gety());
 		return pointinterm;
 	}
+}
+
+//recherche les perpendicularites entre un segment et les autres segments de la liste
+Point ajoutperpendicularite(Segment seg, vector<Forme*> liste, bool origine, int n, int W, int H){
+	//parcours des segments de la liste
+	for (int i = 0; i < n-1; i++)
+	{
+		if(liste[i]->gettype()==SEGMENT){
+			// si les deux segments sont presque perpendiculaires
+			if(IsPerpendicular (*liste[i], seg)){
+				cout<<"orthogonalite a i = "<<i<<endl;
+				Point pointinterm;
+				Point vec_dir_seg;
+				Point vec_ortho;
+				vec_dir_seg = (liste[i]->getextremite()-liste[i]->getorigine())/distanceP(liste[i]->getextremite(), liste[i]->getorigine(), W, H);
+				vec_ortho.setx(vec_dir_seg.gety());
+				vec_ortho.sety(-vec_dir_seg.getx());
+				if(origine){
+
+					pointinterm = seg.getextremite() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
+				}else{
+					pointinterm = seg.getorigine() + distanceP(seg.getextremite(), seg.getorigine(), W, H)*vec_ortho;
+				}
+				return pointinterm;
+			}
+		}
+	}
+	// si il n'y a pas d'autres segments ou si ils ne sont pas perpendiculaires
+	return Point(1000, 1000, W, H);
+}
+
+Segment AnalyseSegment(Segment* seg, vector<Forme*> liste, int n, int distancemaxpoints, int W, int H){
+	Point origine = seg->getorigine();
+	Point extremite = seg->getextremite();
+	bool or = false;
+	bool ex = false;
+	bool orthogonalise = false;
+	Segment newseg;
+	newseg.setorigine(origine);
+	newseg.setextremite(extremite);
+	//recherche de points
+
+	origine = ajoutpointconfondu(&(seg->getorigine()), liste, n, distancemaxpoints, W, H);
+	if(origine.getx()<1){
+		or = true;
+		newseg.setorigine(origine);
+	}
+
+	extremite = ajoutpointconfondu(&(seg->getextremite()), liste, n, distancemaxpoints, W, H);
+	if(extremite.getx()<1){
+		ex = true;
+		newseg.setextremite(extremite);
+	}
+
+	//si pas trouves, recherche de perpendiculaire
+	/*if(!or){
+		origine = ajoutperpendicularite(*seg, liste, true, n, W, H);
+		if(origine.getx()<1){
+			or = true;
+			orthogonalise = true;
+			newseg.setorigine(origine);
+		}
+	}
+	if(!ex && !orthogonalise){
+		extremite = ajoutperpendicularite(*seg, liste, false, n, W, H);
+		if(extremite.getx()<1){
+			ex = true;
+			newseg.setextremite(extremite);
+		}
+	}*/
+	//si pas de points trouves, recherche de paralleles
+	//TO DO
+	return newseg;
 }

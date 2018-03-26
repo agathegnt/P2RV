@@ -14,12 +14,11 @@ bool IsPerpendicular (Forme, Segment);
 bool IsParallel (Forme, Segment);
 bool IsClosed (Trait, int, int);
 bool IsClosedLigne (LigneBrisee, int, int);
-int cherchevec(Point, vector<Point>);
+
 
 //analyse segment
 float trouversegment(Trait, int, int);
-Point ajoutperpendicularite(Segment, vector<Forme*>, bool, int, int, int);
-Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);
+
 
 //analyse cercle
 float trouvercercle(Trait, Cercle&, int, int);
@@ -35,4 +34,7 @@ bool trouverrectangle (LigneBrisee, Rectangle&, int, int, int);
 bool trouverpolygone (LigneBrisee, Polygone&, int, int, int);
 
 //recherche de liens entre les formes
+int cherchevec(Point, vector<Point>);
 Point ajoutpointconfondu(Point*, vector<Forme*>, int, int, int, int);
+Point ajoutperpendicularite(Segment, vector<Forme*>, bool, int, int, int);
+Segment AnalyseSegment(Segment*, vector<Forme*>, int, int, int, int);

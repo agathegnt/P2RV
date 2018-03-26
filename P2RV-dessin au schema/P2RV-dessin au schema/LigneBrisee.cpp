@@ -5,7 +5,6 @@
 //Constructeur par défaut : une ligne vide
 LigneBrisee::LigneBrisee(){
 	table = vector<Segment>(0);
-	afficher = true;
 	type = LIGNEBRISEE;
 }
 

@@ -5,7 +5,6 @@ Rectangle::Rectangle(){
 	pointA = Point();
 	pointB = Point();
 	pointC = Point();
-	afficher = true;
 	type = RECTANGLE;
 }
 
@@ -14,7 +13,6 @@ Rectangle::Rectangle(Point A, Point B, Point C){
 	pointA = A;
 	pointB = B;
 	pointC = C;
-	afficher = true;
 	type = RECTANGLE;
 }
 
