@@ -89,7 +89,7 @@ void vMouse(int button, int state, int x, int y)
         // mise a jour de l'erreur cercle si la forme est fermée (sinon, ça ne peut pas etre un cercle)
   			if(IsClosed (*TraitaTester, W, distancemaxclosed))
         {
-  				errcercle = trouvercercle(*TraitaTester, *cercle, W, H)/*/500*/;
+  				errcercle = trouvercercle(*TraitaTester, *cercle, W, H);
   			}
 
         // si l'erreur segment est la plus faible
@@ -121,12 +121,12 @@ void vMouse(int button, int state, int x, int y)
   					liste.pop_back();
   					liste.push_back(rectangle);
   				}
-  				/*Polygone* polygone = new Polygone();
+  				Polygone* polygone = new Polygone();
   				if (trouverpolygone(*ligne, *polygone, W, H, distancemaxclosedligne))
   				{
   					liste.pop_back();
   					liste.push_back(polygone);
-  				}*/
+  				}
         // sinon si l'erreur la plus faible est celle du cercle
   			}else
         {
